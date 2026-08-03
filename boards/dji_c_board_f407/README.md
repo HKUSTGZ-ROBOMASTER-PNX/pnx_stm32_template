@@ -1,22 +1,24 @@
 # DJI C-board STM32F407 ownership
 
-This directory is the only F407/board-specific layer. Public contracts remain
-in `pnx_bsp`; STM32 HAL handles, pins, registers, DMA channels and IRQ details
-must not leave this directory.
+This directory owns the generated DJI C-board hardware description, startup,
+linker, ThreadX/USBX integration and CubeMX lifecycle. The selected
+`pnx_bsp/F4_version_bsp` branch owns the F407 direct BSP implementations;
+public contracts remain in `pnx_bsp/*/include`.
 
-Each `bsp/bsp_*.cpp` directly defines the corresponding public `bsp::*`
-symbols. There is no separate `detail::backend_*` forwarding layer.
+Each `pnx_bsp/*/src/bsp_*.cpp` directly defines the corresponding public
+`bsp::*` symbols and consumes this Board's generated handles/resources. There
+is no separate `detail::backend_*` forwarding layer.
 
 | Resource | Authoritative owner | Lifecycle |
 | --- | --- | --- |
 | Clock, startup, linker, ThreadX Cortex-M4 | CubeMX/CMSIS files in this directory | Always present |
-| Indicator PH10/PH11 and diagnostics/fault record | `bsp/bsp_indicator.cpp`, `bsp/bsp_diagnostics.cpp`, `bsp/fault_handlers.S` | Core |
-| USB OTG FS / USBX | IOC/generated sources + `bsp/bsp_usb.cpp` | Only the USB closure |
-| Servo C2, TIM1_CH2/PE11 | `bsp/bsp_pwm.cpp` | Only the attended PWM closure; compare is cleared on stop |
-| CAN1/CAN2 bxCAN | IOC/generated handles + `bsp/bsp_can.cpp` | Direct implementation retained; no active application closure |
-| USART1/3/6 | IOC/generated handles + `bsp/bsp_usart.cpp` | Direct implementation retained; no active DBUS closure |
-| SPI1, PA7/PB3/PB4, Mode 3 | `bsp/bsp_spi.cpp` | Direct implementation retained; no active BMI088 closure |
-| Flash geometry and erase/program | `bsp/bsp_flash.cpp` | `UNSUPPORTED_UNTIL_RESERVED_PARTITION`; not linked into a supported RC2 image and no destructive hardware test |
+| Indicator PH10/PH11 and diagnostics/fault record | `pnx_bsp/indicator/src`, `pnx_bsp/diagnostics/src` | Core |
+| USB OTG FS / USBX | IOC/generated sources + `pnx_bsp/usb/src` | Only the USB closure |
+| Servo C2, TIM1_CH2/PE11 | `pnx_bsp/pwm/src` | Only the attended PWM closure; compare is cleared on stop |
+| CAN1/CAN2 bxCAN | IOC/generated handles + `pnx_bsp/can/src` | Direct implementation retained; no active application closure |
+| USART1/3/6 | IOC/generated handles + `pnx_bsp/usart/src` | Direct implementation retained; no active DBUS closure |
+| SPI1, PA7/PB3/PB4, Mode 3 | `pnx_bsp/spi/src` | Direct implementation retained; no active BMI088 closure |
+| Flash geometry and erase/program | `pnx_bsp/flash/src` | `UNSUPPORTED_UNTIL_RESERVED_PARTITION`; not linked into a supported RC2 image and no destructive hardware test |
 
 Generated `can.c` or `usart.c` establishes hardware capability and HAL handles;
 it does not start the public BSP service. Root CMake decides whether a direct
@@ -28,22 +30,23 @@ missing, `main.c` fails compilation instead of silently skipping ownership.
 
 Application, Device and Module code may include the board-neutral headers and
 call APIs such as `bsp::can::transmit()` or
-`bsp::usart::start_rx_to_idle()`. They must not include this directory or name:
+`bsp::usart::start_rx_to_idle()`. They must not include Board files or private
+`pnx_bsp/*/src` headers, or name:
 
 - `hcan1`, `hcan2`, `huart1`, `huart3`, `huart6`;
 - `HAL_CAN_*`, `HAL_UART_*`, GPIO ports or pin numbers;
 - DMA stream/channel or IRQ names;
 - F407 register/peripheral instances.
 
-That boundary lets other boards expose the same public contract without
-placing their implementation in this F407 repository.
+That boundary lets another MCU-family branch expose the same public contract
+with its own direct implementation.
 
 ## Manual resource ownership
 
 SPI1 and TIM1 are deliberately manual resources and are not IOC peripherals.
-The IOC owns the BMI088 chip-select safe-high boot state; `bsp_spi.cpp` may
-reassert the same safe polarity before enabling SPI1. This is a lifecycle
-handoff, not two competing configurations.
+The IOC owns the BMI088 chip-select safe-high boot state;
+`pnx_bsp/spi/src/bsp_spi.cpp` may reassert the same safe polarity before
+enabling SPI1. This is a lifecycle handoff, not two competing configurations.
 
 There must always be one owner per peripheral. Application code must not
 initialize SPI1, TIM1 or the same GPIO pins again.

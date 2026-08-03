@@ -1,5 +1,112 @@
 # F407 Engineering Handoff
 
+## Direct BSP source ownership correction — local parent closure, 2026-08-03
+
+This section supersedes every older statement below about the current location
+of F407 Direct BSP implementation source. Historical build and hardware records
+remain scoped to their recorded commits and artifacts.
+
+### Approved boundary
+
+The user clarified that removing the backend forwarding layer never meant
+removing `src` from the BSP repository. The accepted path is now:
+
+```text
+Application / Device / Module
+             -> pnx_bsp/*/include public API
+             -> pnx_bsp/*/src direct F407 implementation
+             -> parent CubeMX handles / STM32F4 HAL / CMSIS
+```
+
+No `detail::backend_*`, runtime registry, factory, or platform selector was
+restored. Parent Board files still own IOC/generated code, startup, linker and
+middleware integration; the F407 `pnx_bsp` branch owns the direct peripheral
+implementation.
+
+### Baseline and branch assessment
+
+- Parent baseline:
+  `arch-cleanup-rc1@731d1b43742857a47ce3e16d71172c110c5e6cbc`.
+- BSP baseline:
+  `arch-cleanup-rc1@f7b9c541f977b157dd349f9d8ffd37ea6b252be7`.
+- Published BSP result:
+  `F4_version_bsp@da09febe8f5bfe66993010247d4d6731d0ca492b`.
+- Local parent functional result:
+  `arch-cleanup-rc1@5f222b68530b135fb46bc3c12de8127ef5fff6f0`.
+- The parent branch started as a strict four-commit descendant of
+  `upstream/F4_version@ed9a227`; the functional result adds the Direct BSP
+  source-ownership commit without changing Device/Lib/Module pins.
+- The BSP commit is advertised by the official remote and is safe to pin.
+  Parent push, fresh recursive clone and tag creation have not run. Two earlier
+  cleanup commits retain range-level CRLF whitespace findings; this task does
+  not rewrite that existing history.
+
+### Actual changes
+
+- Moved 15 implementation files without content changes:
+  - CAN -> `pnx_bsp/can/src`;
+  - diagnostics and strong fault handlers -> `pnx_bsp/diagnostics/src`;
+  - Flash, indicator, PWM, SPI, USART and USB -> their respective
+    `pnx_bsp/*/src` directories;
+  - private channel/device/transport helpers moved beside their owning source.
+- Every new file has the same Git blob ID as its former
+  `boards/dji_c_board_f407/bsp` path.
+- Root CMake now selects `pnx_bsp/*/src/bsp_*.cpp`. PWM and USB private include
+  directories are added only to their own closures.
+- Added `direct_bsp_source_layout`: it first failed because
+  `pnx_bsp/can/src/bsp_can.cpp` was absent, then passed after relocation. It
+  also rejects a second parent Board implementation and retired backend
+  forwarding symbols.
+- Updated the root, Board and BSP ownership documentation. Historical audit
+  files were not rewritten.
+
+### Fresh software validation
+
+| Preset | Configure/build/link | Warnings | RAM | Flash |
+|---|---|---:|---:|---:|
+| `f407-debug` | PASS | 0 | 49,792 B | 23,736 B |
+| `f407-release` | PASS | 0 | 49,792 B | 15,188 B |
+| `f407-usb-cdc-debug` | PASS | 0 | 66,040 B | 67,952 B |
+| `f407-usb-cdc-release` | PASS | 0 | 66,000 B | 40,056 B |
+| `f407-pwm-a2-debug` | PASS | 0 | 49,864 B | 27,656 B |
+
+- Host configure/build: PASS with zero warnings; CTest **36/36 PASS**.
+- Dormant CAN, USART, SPI, Flash and EXTI sources pass GNU Arm
+  `-Wall -Wextra -Werror -fsyntax-only` from their new locations.
+- Source graphs contain only diagnostics/DWT/indicator for Core, add only USB
+  for USB images, and add only PWM for the PWM image. No graph compiles a
+  parent `boards/.../bsp` implementation.
+- Every ELF has exactly one `app_start` and zero duplicate strong `bsp::*`
+  symbols. CAN/USART generated init authority remains false in all five images.
+- Ten public BSP headers have zero STM32 HAL type/handle leakage.
+- Source scans find zero `detail::backend_*` or `pnx_backends` implementation.
+- All three retired validation selectors still fail closed.
+- The BSP worktree is clean at the published SHA. The parent functional commit
+  and current documentation diff pass `git diff --check`; the local `.codex`
+  task packet is deliberately untracked. Two pre-existing, unrelated July audit
+  reports were preserved unchanged and are not part of this Gate.
+
+```text
+DIRECT_BSP_SRC_OWNERSHIP=PASS
+RELOCATED_BLOBS_IDENTICAL=15/15
+F407_5_PRESETS=PASS
+F407_ZERO_WARNINGS=PASS
+HOST_TESTS=36/36_PASS
+SOURCE_GRAPH_ISOLATION=PASS
+PUBLIC_SYMBOL_UNIQUENESS=PASS
+PUBLIC_HEADER_LEAKAGE=PASS
+BACKEND_FORWARDING=ABSENT
+HARDWARE_REVALIDATION=NOT_RUN
+PNX_BSP_SHA=da09febe8f5bfe66993010247d4d6731d0ca492b
+PNX_BSP_COMMIT=PASS
+PNX_BSP_PUSH=PASS
+PARENT_FUNCTIONAL_COMMIT=5f222b68530b135fb46bc3c12de8127ef5fff6f0
+PARENT_DOCUMENTATION_COMMIT=THIS_COMMIT
+PARENT_PUSH=NOT_RUN
+FRESH_RECURSIVE_CLONE=NOT_RUN
+RC2_TAG=NOT_CREATED
+```
+
 ## Latest pnx_template main alignment — local working tree, 2026-07-30
 
 This section supersedes the shared-pin and current-working-tree statements

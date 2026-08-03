@@ -2,6 +2,31 @@
 
 This file is a proposal only. The Vault was not modified.
 
+## 2026-08-03 Direct BSP source ownership correction proposal
+
+- Record the corrected interpretation of “no backend”: the F407-specific
+  `pnx_bsp` branch retains both `*/include` public contracts and `*/src` direct
+  F407 implementations. What remains forbidden is the redundant
+  `public -> detail::backend_* -> HAL` forwarding chain.
+- Record that 15 already-validated implementation/private-support blobs moved
+  from the parent Board tree to their owning BSP module without content change.
+- Record that parent CubeMX/generated code supplies hardware handles while root
+  CMake selects exactly one `pnx_bsp/*/src` implementation per image.
+- Record the published BSP result
+  `F4_version_bsp@da09febe8f5bfe66993010247d4d6731d0ca492b` and local parent
+  functional commit `5f222b68530b135fb46bc3c12de8127ef5fff6f0` that pins it.
+- Record fresh post-commit local software evidence: five presets warning-free
+  with unchanged RAM/Flash, Host CTest 36/36, dormant peripheral syntax checks
+  PASS, source isolation and symbol uniqueness PASS, public-header leakage zero,
+  backend forwarding zero and retired selectors fail closed.
+- Preserve evidence scope: BSP commit/push is complete; parent push, fresh
+  recursive clone, hardware revalidation, tag creation and Vault ingestion were
+  not performed.
+- Preserve the cleanup-branch caveat: the current tree is directionally cleaner
+  than `F4_version`, but earlier cleanup commits retain range-level CRLF
+  whitespace findings. The BSP is remotely reproducible; parent publication and
+  remote fresh-clone verification remain outstanding.
+
 ## 2026-07-30 latest pnx_template main alignment proposal
 
 - Record a local-only comparison and alignment against

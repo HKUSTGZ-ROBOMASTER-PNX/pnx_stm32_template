@@ -31,7 +31,7 @@ Application / Device / Module
       public pnx_bsp header
               │
               ▼
-boards/dji_c_board_f407/bsp/bsp_*.cpp
+       pnx_bsp/*/src/bsp_*.cpp
               │
               ▼
        STM32F4 HAL / CMSIS
@@ -51,12 +51,12 @@ runtime registry、factory、service locator、function-pointer table，亦
 | USB CDC Release | `f407-usb-cdc-release` | RC2 local PASS，RAM 66,000 B／Flash 40,056 B | 可選 USB CDC |
 | PWM/A2 Debug | `f407-pwm-a2-debug` | RC2 local PASS，RAM 49,864 B／Flash 27,656 B | attended hardware validation，不是產品 composition |
 
-以上數字已在更新 shared pins 後的本地 working tree 重新 fresh
-build/link；working tree 的 parent base 是
-`d9d85acdca5a82a330762e02c7dd9b0f580d54bb`，但本次修改尚未 commit，
-因此不是新 release commit 或 RC2 tag 已發布的宣稱。五個 preset 均為
-0 compiler/linker warnings、恰有一個 `app_start`，且沒有重複的
-strong `bsp::*` definition。
+以上數字已在 parent functional commit
+`5f222b68530b135fb46bc3c12de8127ef5fff6f0` 上，以 `--clean-first`
+重新 configure/build/link。該 commit pin 已發布的 F407 Direct BSP
+`da09febe8f5bfe66993010247d4d6731d0ca492b`；parent 尚未 push，亦未建立
+新 release tag。五個 preset 均為 0 compiler/linker warnings、恰有一個
+`app_start`，且沒有重複的 strong `bsp::*` definition。
 
 BMI088、DBUS RX 與 CAN/M2006 validation closure 已撤下。它們先前依賴
 非 template 的 Device/Lib/Module API；在三個 submodule 回到 template
@@ -119,6 +119,10 @@ ctest --test-dir build/host --output-on-failure
 ```
 
 `tests/host` 必須由 repository root configure，不是獨立 CMake project。
+目前完整 suite 為 **36/36 PASS**，其中
+`direct_bsp_source_layout` 保證 F407 Direct BSP implementation 位於
+`pnx_bsp/*/src`，且 parent Board tree 不再保存另一份 public symbol
+implementation。
 
 ## 高階目錄
 
@@ -139,20 +143,11 @@ pnx_f4_minimal/
 │     ├─ usb_cdc/
 │     └─ pwm_a2/
 ├─ pnx_bsp/
-│  └─ board-neutral public BSP contracts
+│  ├─ */include/  MCU-neutral public BSP contracts
+│  └─ */src/      F407 direct implementations selected by CMake
 ├─ pnx_devices/ / pnx_libs/ / pnx_modules/
 │  └─ template-pinned reusable layers
 ├─ boards/dji_c_board_f407/
-│  ├─ bsp/
-│  │  ├─ bsp_can.cpp
-│  │  ├─ bsp_diagnostics.cpp
-│  │  ├─ bsp_flash.cpp
-│  │  ├─ bsp_indicator.cpp
-│  │  ├─ bsp_pwm.cpp
-│  │  ├─ bsp_spi.cpp
-│  │  ├─ bsp_usart.cpp
-│  │  ├─ bsp_usb.cpp
-│  │  └─ board-private support headers / fault_handlers.S
 │  ├─ Core/ / AZURE_RTOS/ / USBX/
 │  ├─ Drivers/ / Middlewares/
 │  └─ startup_stm32f407xx.s / STM32F407XX_FLASH.ld
@@ -162,7 +157,8 @@ pnx_f4_minimal/
 
 Device 與 Module 可以知道 `bsp::can`、`bsp::spi`、`bsp::usart` 等公共
 contract，但不可知道 `hcan1`、`huart3`、GPIO pin、DMA stream、IRQ 名稱
-或 `HAL_*`。這些硬體細節只能出現在 board directory。
+或 `HAL_*`。這些硬體細節只能出現在 F4 branch 的 `pnx_bsp/*/src` 或
+Board generated/platform files。
 
 為了讓未分支的 template Device/Module 直接編譯，公共 contract 保留
 下列相容名稱：
@@ -215,8 +211,8 @@ USART1/3/6 初始化；未來選入對應 Direct BSP source 的 image 才會啟�
   CAN/UART/USB capability、一般 GPIO 與開機安全狀態。
 - `configs/boards/dji_c_board_f407/*.json`：board policy 與 public
   contract binding；輸出只寫到 build-local generated headers。
-- `boards/dji_c_board_f407/bsp/`：F407 direct implementation，持有 HAL
-  handle、pin、IRQ、DMA 與 peripheral instance。
+- `pnx_bsp/*/src/`：F407 direct implementation，持有 HAL handle、pin、
+  IRQ、DMA 與 peripheral instance；不再增加一層 backend forwarding。
 
 SPI1/BMI088 與 TIM1_CH2/PE11 目前是手寫 board resource；完整 ownership
 與 CubeMX regeneration 規則見
@@ -261,18 +257,22 @@ closure 的失敗。
 
 ## Submodule 與發布邊界
 
-目前 Device/Lib/Module 已更新到
-`pnx_template@cf6577765358822a1bc57c1ea17fe65a795ceb62` 的 exact commits：
+目前 submodule pins 如下；Device/Lib/Module 使用
+`pnx_template@cf6577765358822a1bc57c1ea17fe65a795ceb62` 的 exact commits，
+而 BSP 使用已發布的 F407-specific commit：
 
 ```text
+pnx_bsp      da09febe8f5bfe66993010247d4d6731d0ca492b
 pnx_devices  2349cc108c9ed477ccdcd700e802ea888975cdfd
 pnx_libs     e7c3e7a2b9d825586ab3e0c413877180c4295df8
 pnx_modules  8ba925b60b11fec511a57622c199b57bb23f8f4e
 ```
 
-這三個 submodule 不需要為 F407 另開長期 branch。F407 所需的公共 BSP
-contract 變更在 `pnx_bsp`，F407 HAL 實作在 parent repository 的
-`boards/dji_c_board_f407/bsp/`。
+這三個 submodule 不需要為 F407 另開長期 branch。`pnx_bsp` 則使用
+F407-specific branch：公共 contract 在 `*/include`，F407 HAL direct
+implementation 在同一 branch 的 `*/src`。Parent repository 只負責 pin
+該 commit、提供 CubeMX generated handles，並由 CMake 選擇 image 所需
+source。
 
 最新 `pnx_modules` 內含 PS2 receiver 與 Tactical AHRS source，但 RC2
 image graph 不選入兩者。F407 config generator 已提供 disabled-by-default
@@ -286,7 +286,8 @@ API，並驗證 F407 config generation；SPI/PWM/USART contract tests 也會
 檢查相容入口。這只能證明 API 與 fail-closed software contract，不能
 代替實機驗證。
 
-RC2 發布必須先讓新的 F407 `pnx_bsp` SHA 可由官方 remote 取得，再提交
-parent gitlink。只有 remote recursive clone 重跑五個 presets、完整
-host suite、F407 source graph 與 symbol gates 全部通過後，才能建立
-annotated tag；H7 regression 不屬於此流程。
+新的 F407 `pnx_bsp` SHA 已由官方 `F4_version_bsp` remote branch 提供，
+parent functional commit `5f222b6` 亦已 pin 該 SHA。下一個發布步驟是
+push parent，再從 remote recursive clone 重跑五個 presets、完整 Host
+suite、F407 source graph 與 symbol gates；全部通過後才能建立 annotated
+tag。H7 regression 不屬於此流程。

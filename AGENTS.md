@@ -12,6 +12,10 @@ Device/Lib/Module gitlinks return to the `pnx_template` baseline.
   and resource mapping below the Board/platform boundary.
 - Keep shared public APIs free of STM32 HAL types, MCU-family symbols,
   other-MCU memory-bank labels, and board handle names.
+- Keep F407 direct BSP implementations in the F407-specific
+  `pnx_bsp/*/src` directories. Those sources define public `bsp::*` symbols
+  directly; do not move them into a parent-only BSP tree or reintroduce a
+  `detail::backend_*` forwarding layer.
 - IOC/CubeMX owns generated resources. The documented manual board resources
   are SPI1/BMI088 and TIM1_CH2/PE11 PWM; do not transfer ownership without a
   reviewed CubeMX task and hardware revalidation.
