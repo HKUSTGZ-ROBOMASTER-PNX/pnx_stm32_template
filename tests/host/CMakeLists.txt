@@ -4,7 +4,7 @@ add_executable(pnx_usb_contract_host_tests
 )
 target_include_directories(pnx_usb_contract_host_tests PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/fakes"
-    "${CMAKE_SOURCE_DIR}/boards/dji_c_board_f407/bsp"
+    "${CMAKE_SOURCE_DIR}/pnx_bsp/usb/src"
     "${CMAKE_SOURCE_DIR}/pnx_bsp/usb/include"
     "${CMAKE_SOURCE_DIR}/pnx_libs/common/include"
 )
@@ -83,6 +83,13 @@ add_test(
         -P "${CMAKE_CURRENT_SOURCE_DIR}/config_generation_contract.cmake"
 )
 
+add_test(
+    NAME direct_bsp_source_layout
+    COMMAND ${CMAKE_COMMAND}
+        "-DPNX_SOURCE_DIR=${CMAKE_SOURCE_DIR}"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/direct_bsp_source_layout_contract.cmake"
+)
+
 add_executable(pnx_shared_module_api_host_tests
     shared_module_api_host_tests.cpp
 )
@@ -134,7 +141,7 @@ add_executable(pnx_usart_contract_host_tests
 )
 target_include_directories(pnx_usart_contract_host_tests PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/fakes"
-    "${CMAKE_SOURCE_DIR}/boards/dji_c_board_f407/bsp"
+    "${CMAKE_SOURCE_DIR}/pnx_bsp/usart/src"
     "${CMAKE_SOURCE_DIR}/pnx_bsp/usart/include"
     "${CMAKE_SOURCE_DIR}/pnx_libs/common/include"
 )

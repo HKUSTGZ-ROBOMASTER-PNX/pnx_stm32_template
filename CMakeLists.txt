@@ -91,7 +91,7 @@ endif()
 
 set(PNX_BOARD_ROOT
     "${CMAKE_CURRENT_SOURCE_DIR}/boards/dji_c_board_f407")
-set(PNX_BOARD_BSP_ROOT "${PNX_BOARD_ROOT}/bsp")
+set(PNX_BSP_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp")
 set(PNX_BOARD_IOC
     "${PNX_BOARD_ROOT}/dji_c_board_f407.ioc")
 set(PNX_BOARD_PARAMS
@@ -142,10 +142,10 @@ unset(OUT_DIR)
 
 set(PNX_EMBEDDED_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/demo/app.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/dwt/src/bsp_dwt.cpp"
-    "${PNX_BOARD_BSP_ROOT}/bsp_diagnostics.cpp"
-    "${PNX_BOARD_BSP_ROOT}/bsp_indicator.cpp"
-    "${PNX_BOARD_BSP_ROOT}/fault_handlers.S"
+    "${PNX_BSP_ROOT}/dwt/src/bsp_dwt.cpp"
+    "${PNX_BSP_ROOT}/diagnostics/src/bsp_diagnostics.cpp"
+    "${PNX_BSP_ROOT}/indicator/src/bsp_indicator.cpp"
+    "${PNX_BSP_ROOT}/diagnostics/src/fault_handlers.S"
 )
 
 set(PNX_EMBEDDED_INCLUDE_DIRS
@@ -153,26 +153,27 @@ set(PNX_EMBEDDED_INCLUDE_DIRS
     "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/dwt/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/indicator/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/pnx_libs/common/include"
-    "${PNX_BOARD_BSP_ROOT}"
     "${PNX_EMBEDDED_GENERATED_DIR}"
 )
 
 if(PNX_ENABLE_PWM_A2)
     list(APPEND PNX_EMBEDDED_SOURCES
-        "${PNX_BOARD_BSP_ROOT}/bsp_pwm.cpp"
+        "${PNX_BSP_ROOT}/pwm/src/bsp_pwm.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/demo/cboard/pwm_a2/pwm_a2.cpp"
     )
     list(APPEND PNX_EMBEDDED_INCLUDE_DIRS
         "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/pwm/include"
+        "${PNX_BSP_ROOT}/pwm/src"
         "${CMAKE_CURRENT_SOURCE_DIR}/demo/cboard/pwm_a2"
     )
 elseif(PNX_ENABLE_USB_CDC)
     list(APPEND PNX_EMBEDDED_SOURCES
-        "${PNX_BOARD_BSP_ROOT}/bsp_usb.cpp"
+        "${PNX_BSP_ROOT}/usb/src/bsp_usb.cpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/demo/cboard/usb_cdc/usb_cdc.cpp"
     )
     list(APPEND PNX_EMBEDDED_INCLUDE_DIRS
         "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/usb/include"
+        "${PNX_BSP_ROOT}/usb/src"
     )
 else()
     list(APPEND PNX_EMBEDDED_SOURCES
@@ -182,7 +183,7 @@ endif()
 
 set(PNX_F407_CAN_ENABLED OFF)
 list(FIND PNX_EMBEDDED_SOURCES
-    "${PNX_BOARD_BSP_ROOT}/bsp_can.cpp"
+    "${PNX_BSP_ROOT}/can/src/bsp_can.cpp"
     PNX_F407_CAN_SOURCE_INDEX
 )
 if(NOT PNX_F407_CAN_SOURCE_INDEX EQUAL -1)
@@ -191,7 +192,7 @@ endif()
 
 set(PNX_F407_USART_ENABLED OFF)
 list(FIND PNX_EMBEDDED_SOURCES
-    "${PNX_BOARD_BSP_ROOT}/bsp_usart.cpp"
+    "${PNX_BSP_ROOT}/usart/src/bsp_usart.cpp"
     PNX_F407_USART_SOURCE_INDEX
 )
 if(NOT PNX_F407_USART_SOURCE_INDEX EQUAL -1)
