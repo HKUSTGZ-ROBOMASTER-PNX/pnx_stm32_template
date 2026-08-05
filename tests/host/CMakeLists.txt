@@ -90,6 +90,13 @@ add_test(
         -P "${CMAKE_CURRENT_SOURCE_DIR}/direct_bsp_source_layout_contract.cmake"
 )
 
+add_test(
+    NAME ps2_startup_lifecycle
+    COMMAND ${CMAKE_COMMAND}
+        "-DPNX_SOURCE_DIR=${CMAKE_SOURCE_DIR}"
+        -P "${CMAKE_CURRENT_SOURCE_DIR}/ps2_startup_lifecycle_contract.cmake"
+)
+
 add_executable(pnx_shared_module_api_host_tests
     shared_module_api_host_tests.cpp
 )
