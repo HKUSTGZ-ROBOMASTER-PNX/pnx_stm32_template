@@ -2,6 +2,44 @@
 
 This file is a proposal only. The Vault was not modified.
 
+## 2026-08-06 F407 official PS2 hardware-validation proposal
+
+- Record the approved integration boundary: keep the F407 parent and Direct
+  BSP, do not merge the H723 `pnx_template/main` parent, and update only
+  `pnx_modules` from `8ba925b` to published
+  `fix/f407-ps2-stack@42a4b35`, based directly on `main@44ff9ab`; retain
+  `f3a3274` as the original official PS2 mapping provenance.
+- Record the new isolated `f407-ps2-debug` closure: physical C-board UART2 ->
+  MCU USART1 RX DMA (PA9/PB7) -> F407 Direct USART BSP -> official PS2 parser
+  -> Remoter unified state -> debugger
+  telemetry. Existing Core, USB, and PWM images do not acquire this closure.
+- Record the official API impact: PS2 link/buttons/edges/event count now live
+  in the nested/unified `remoter::state`; `ps2_state` retains raw axes, frame
+  count, signal count, and last signal tick.
+- Record config fail-closed behavior for missing RX DMA and report/remoter UART
+  conflicts, plus per-UART generated initialization that retains USART1 only
+  in the PS2 ELF.
+- Record fresh software evidence: Host CTest **37/37 PASS**; six F407 presets
+  configure/build/link PASS with zero warnings; non-PS2 PS2-closure source
+  counts are zero; PS2 counts are one each; shared legacy RAM sections are
+  explicitly placed in F407 RAM.
+- Record the current software artifact: RAM `55,456 B`, Flash `50,856 B`;
+  ELF SHA-256
+  `7950C1561B81C8B037E500EA39629D8FCA89419EE20F2BB114C70E3F0F69E2C0`.
+- Record three retained ThreadX stack-fault diagnoses and TDD fixes: the
+  validation monitor, unified Remoter service, and PS2 driver stacks are now
+  1536 B.
+- Record attended hardware PASS on DAP `482752183208`: disconnected `0xAB`,
+  connected frames, Cross `0x4000`, left-stick normalized Y `1.0`, raw/unified
+  mapping match, and final stack margins of 628/532/508 B. This result belongs
+  to precursor artifact
+  `F7BE6A16A009118715E53A936762D8F9E6E386604D7A98BA182C2B5B92F436A0`,
+  not the current `42a4b35` software artifact.
+- Record publication scope: the modules feature branch and parent
+  `F4_version` history were authorized for push; modules `main` was not merged
+  or changed. No CubeMX regeneration, new hardware operation, motor output, or
+  Vault ingestion was performed in the publication task.
+
 ## 2026-08-03 Direct BSP source ownership correction proposal
 
 - Record the corrected interpretation of “no backend”: the F407-specific

@@ -2,7 +2,7 @@
 
 這個 repository 是 DJI C-board（STM32F407）的最小 firmware 基礎模板。
 它負責 F407 board support、共用 submodule 整合、安全 Core image、可選
-USB CDC image，以及隔離的 PWM/A2 驗證 image；正式 chassis、gimbal、
+USB CDC image，以及隔離的 PWM/A2 與 PS2 驗證 image；正式 chassis、gimbal、
 shooter 等車組 application 應放在各自 repository。
 
 本 repository 只實作 F407；不在這裡加入、修改或驗收 H7 source。
@@ -50,12 +50,14 @@ runtime registry、factory、service locator、function-pointer table，亦
 | USB CDC Debug | `f407-usb-cdc-debug` | RC2 local PASS，RAM 66,040 B／Flash 67,952 B | 可選 USB CDC |
 | USB CDC Release | `f407-usb-cdc-release` | RC2 local PASS，RAM 66,000 B／Flash 40,056 B | 可選 USB CDC |
 | PWM/A2 Debug | `f407-pwm-a2-debug` | RC2 local PASS，RAM 49,864 B／Flash 27,656 B | attended hardware validation，不是產品 composition |
+| PS2 Debug | `f407-ps2-debug` | software PASS，RAM 55,456 B／Flash 50,856 B；precursor artifact hardware PASS | USART1 RX-DMA PS2 remoter validation，不是產品 composition |
 
-以上數字已在 parent functional commit
-`5f222b68530b135fb46bc3c12de8127ef5fff6f0` 上，以 `--clean-first`
-重新 configure/build/link。該 commit pin 已發布的 F407 Direct BSP
-`da09febe8f5bfe66993010247d4d6731d0ca492b`；parent 尚未 push，亦未建立
-新 release tag。五個 preset 均為 0 compiler/linker warnings、恰有一個
+原有五個 image 數字與 `5f222b68530b135fb46bc3c12de8127ef5fff6f0`
+一致；PS2 數字已在 `pnx_modules@42a4b35` 上 fresh configure/build/link。
+F407 Direct BSP 仍 pin 已發布的
+`da09febe8f5bfe66993010247d4d6731d0ca492b`。原有五個 preset 與新增的
+PS2 preset 均為 0
+compiler/linker warnings、恰有一個
 `app_start`，且沒有重複的 strong `bsp::*` definition。
 
 BMI088、DBUS RX 與 CAN/M2006 validation closure 已撤下。它們先前依賴
@@ -119,7 +121,7 @@ ctest --test-dir build/host --output-on-failure
 ```
 
 `tests/host` 必須由 repository root configure，不是獨立 CMake project。
-目前完整 suite 為 **36/36 PASS**，其中
+目前完整 suite 為 **37/37 PASS**，其中
 `direct_bsp_source_layout` 保證 F407 Direct BSP implementation 位於
 `pnx_bsp/*/src`，且 parent Board tree 不再保存另一份 public symbol
 implementation。
@@ -141,7 +143,8 @@ pnx_f4_minimal/
 │  └─ cboard/
 │     ├─ board_smoke/
 │     ├─ usb_cdc/
-│     └─ pwm_a2/
+│     ├─ pwm_a2/
+│     └─ ps2_validation/
 ├─ pnx_bsp/
 │  ├─ */include/  MCU-neutral public BSP contracts
 │  └─ */src/      F407 direct implementations selected by CMake
@@ -193,17 +196,18 @@ root CMakeLists.txt
    └─ board CMake 連結 CubeMX / HAL / ThreadX
 ```
 
-`PNX_ENABLE_USB_CDC` 與 `PNX_ENABLE_PWM_A2` 互斥。這些 selector 是
-isolated image composition，不應演變成 chassis/gimbal/shooter 等產品
-子系統選單。正式 robot application 應在另一個 repository 組合所需
-Device 與 Module。
+`PNX_ENABLE_USB_CDC`、`PNX_ENABLE_PWM_A2` 與 `PNX_ENABLE_PS2_VALIDATION`
+互斥。這些 selector 是 isolated image composition，不應演變成
+chassis/gimbal/shooter 等產品子系統選單。正式 robot application 應在
+另一個 repository 組合所需 Device 與 Module。
 
 CubeMX 仍可能把 `can.c`、`usart.c` 等 generated capability source 放進
 Core build；這不代表 `bsp_can.cpp` 或 `bsp_usart.cpp` 已啟動或連結。
 root CMake 以同一份 `PNX_EMBEDDED_SOURCES` 判斷 Direct BSP source 是否
 實際被選入，並據此 guard `main.c` 的 CAN／USART generated init call。
-目前五個 RC2 image 都沒有選入這兩個 source，因此不執行 CAN1、CAN2 或
-USART1/3/6 初始化；未來選入對應 Direct BSP source 的 image 才會啟用。
+目前 Core / USB / PWM 這些 RC2 image 都沒有選入這兩個 source，因此不
+執行 CAN1、CAN2 或 USART1/3/6 初始化；PS2 validation branch 另外新增了
+per-UART init guard，讓帶入 `bsp_usart.cpp` 的 image 只啟動實際綁定的 UART。
 
 ## Configuration authority
 
@@ -257,37 +261,42 @@ closure 的失敗。
 
 ## Submodule 與發布邊界
 
-目前 submodule pins 如下；Device/Lib/Module 使用
-`pnx_template@cf6577765358822a1bc57c1ea17fe65a795ceb62` 的 exact commits，
-而 BSP 使用已發布的 F407-specific commit：
+目前 submodule pins 如下；Device/Lib 保留既有 baseline，BSP 使用已發布的
+F407-specific commit，而 Modules 使用從官方 `main@44ff9ab` 建立的已發布
+PS2 stack 修正分支：
 
 ```text
 pnx_bsp      da09febe8f5bfe66993010247d4d6731d0ca492b
 pnx_devices  2349cc108c9ed477ccdcd700e802ea888975cdfd
 pnx_libs     e7c3e7a2b9d825586ab3e0c413877180c4295df8
-pnx_modules  8ba925b60b11fec511a57622c199b57bb23f8f4e
+pnx_modules  42a4b35b63ef7b8528ad756e03d17f1c09bab9af
 ```
 
-這三個 submodule 不需要為 F407 另開長期 branch。`pnx_bsp` 則使用
-F407-specific branch：公共 contract 在 `*/include`，F407 HAL direct
-implementation 在同一 branch 的 `*/src`。Parent repository 只負責 pin
-該 commit、提供 CubeMX generated handles，並由 CMake 選擇 image 所需
-source。
+`pnx_modules/fix/f407-ps2-stack` 僅補 F407 實測所需的 PS2 1536 B stack；
+沒有合併或直接修改 modules `main`。`pnx_bsp` 的 F407-specific branch
+則同時保有 `*/include` public contract 與 `*/src` HAL direct
+implementation。Parent repository 只 pin 可重現 commit、提供 CubeMX
+generated handles，並由 CMake 選擇 image 所需 source。
 
-最新 `pnx_modules` 內含 PS2 receiver 與 Tactical AHRS source，但 RC2
-image graph 不選入兩者。F407 config generator 已提供 disabled-by-default
-的 PS2 symbols，Direct USART BSP 也提供 board-neutral line configuration
-contract，讓之後的 application repository 不必恢復 backend。BMI088
-source 仍需要正式的 F407 `GYRO_INT_Pin`／EXTI mapping，因此
-BMI088/AHRS 的 deferred status 不變。
+目前選取的 `pnx_modules` revision 內含 PS2 receiver 與 Tactical AHRS source，但 RC2
+image graph 不選入兩者。此 branch 另外加入 `f407-ps2-debug` validation
+closure，使用獨立 params 與 demo 驗證 F407 上的單一來源 PS2 路徑；它不
+宣稱 DR16↔PS2 自動 fallback 已可用。PS2 會把綁定 UART 重設為 9600 / 8N1 /
+DMA RX，因此不能與 DR16 共享同一條 UART。C-board 外殼的 `UART2` 對應
+MCU `USART1`（PA9/PB7），已完成接收器斷線碼、正常 frame、Cross 按鍵與
+左搖桿實機驗證；外殼 `UART1` 對應 `USART6` 並保留為 report port。
+Direct USART BSP 仍提供
+board-neutral line configuration contract，讓之後的 application repository
+不必恢復 backend。BMI088 source 仍需要正式的 F407 `GYRO_INT_Pin`／EXTI
+mapping，因此 BMI088/AHRS 的 deferred status 不變。
 
 Host suite 會直接編譯 template 的新 BMI088、LK9025、PID 與 PS2 public
 API，並驗證 F407 config generation；SPI/PWM/USART contract tests 也會
-檢查相容入口。這只能證明 API 與 fail-closed software contract，不能
-代替實機驗證。
+檢查相容入口。Host 測試只證明 API 與 fail-closed software contract；
+PS2 的實機證據另記錄於 `HANDOFF.md` 與 `demo/ps2/README.md`。
 
-新的 F407 `pnx_bsp` SHA 已由官方 `F4_version_bsp` remote branch 提供，
-parent functional commit `5f222b6` 亦已 pin 該 SHA。下一個發布步驟是
-push parent，再從 remote recursive clone 重跑五個 presets、完整 Host
-suite、F407 source graph 與 symbol gates；全部通過後才能建立 annotated
-tag。H7 regression 不屬於此流程。
+新的 F407 `pnx_bsp` SHA 已由官方 `F4_version_bsp` remote branch 提供；
+PS2 modules SHA 亦由官方 `fix/f407-ps2-stack` remote branch 提供。
+`F4_version` 發布後仍應從 remote recursive clone 重跑六個 presets、完整
+Host suite、F407 source graph 與 symbol gates；全部通過後才能建立
+annotated tag。H7 regression 不屬於此流程。

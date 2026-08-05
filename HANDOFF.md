@@ -1,5 +1,128 @@
 # F407 Engineering Handoff
 
+## Official PS2 module integration - published software closure, 2026-08-06
+
+This section supersedes older PS2 availability and shared-module pin statements
+for the current `feat/f407-ps2-validation` working tree. It does not supersede
+earlier hardware results tied to their recorded artifacts.
+
+### Approved boundary and provenance
+
+- F407 parent baseline:
+  `9f8707280d56ae1c8f8061cb9ec12e75f527d1f8`.
+- Freshly fetched official parent:
+  `upstream/main@9430817755e6c4dfd5b131959d43c2da1c05cfb8`.
+- Selected published PS2 module:
+  `pnx_modules/fix/f407-ps2-stack@42a4b35b63ef7b8528ad756e03d17f1c09bab9af`.
+  It is based directly on `main@44ff9ab7da4335fb35f9bbed1a1c2a3e4f70d9c5`;
+  `f3a3274` remains the original official PS2 mapping provenance.
+- Retained F407 Direct BSP:
+  `pnx_bsp@da09febe8f5bfe66993010247d4d6731d0ca492b`.
+- The official parent was not merged. Its H723 BSP gitlink is `6a716cc`; the
+  F407 parent, Board graph, CubeMX output, startup, linker, and BSP ownership
+  remain intact.
+
+### Actual changes
+
+- Updated only the `pnx_modules` gitlink among shared dependencies. The
+  selected commit retains the official Remoter PS2 mapping, shared `wheel`
+  field, and F407 DR16/service stack fixes, then adds the measured F407 PS2
+  stack correction without merging the module feature branch into `main`.
+- Added the mutually exclusive `f407-ps2-debug` closure using USART1 RX DMA,
+  the Direct USART BSP, Msg, Remoter, PS2, and debugger-visible validation
+  telemetry. Core, USB CDC, and PWM/A2 source graphs remain isolated.
+- Adapted telemetry to the official nested `ps2_state.data.ps2_*` API and
+  official `ps2_button` enum. Release edges are retained when a `0xAB`
+  controller-disconnected signal clears held buttons.
+- Corrected the physical C-board mapping: shell `UART2` is MCU USART1 on
+  PA9/PB7 and shell `UART1` is MCU USART6 on PG14/PG9. PS2 uses USART1;
+  USART6 is the report port.
+- Added config contracts for a valid PS2/USART1 configuration, report/remoter
+  UART conflict rejection, and rejection when the bound UART lacks RX DMA.
+  The generator now keeps raw IOC transport capability separate from feature
+  overrides so invalid PS2/DR16 source selection cannot manufacture hardware.
+- Added per-UART generated init guards. The PS2 ELF retains USART1 init only;
+  the five existing images retain no USART init symbols.
+- Added explicit F407 placement for the shared `.ram_d1_bss`, `.ram_d2_bss`,
+  and `.ram_d3_bss` section names.
+- Deferred service initialization and both Msg subscriptions from pre-scheduler
+  `app_start()` into the validation monitor thread. Increased the monitor,
+  PS2 driver, and unified service stacks to 1536 B after retained ThreadX stack
+  diagnostics proved each 768-byte stack insufficient.
+
+### Fresh software validation
+
+| Preset | Configure/build/link | Warnings | RAM | Flash |
+|---|---|---:|---:|---:|
+| `f407-debug` | PASS | 0 | 49,792 B | 23,736 B |
+| `f407-release` | PASS | 0 | 49,792 B | 15,188 B |
+| `f407-usb-cdc-debug` | PASS | 0 | 66,040 B | 67,952 B |
+| `f407-usb-cdc-release` | PASS | 0 | 66,000 B | 40,056 B |
+| `f407-pwm-a2-debug` | PASS | 0 | 49,864 B | 27,656 B |
+| `f407-ps2-debug` | PASS | 0 | 55,456 B | 50,856 B |
+
+- Old-module baseline: Host `36/36 PASS`; PS2 RAM `53,024 B`, Flash
+  `48,068 B`.
+- TDD RED: the new mapping contract failed against `pnx_modules@8ba925b` on
+  missing official API fields. It passed after the one-gitlink update.
+- Fresh native Host build and CTest at `pnx_modules@42a4b35`: **37/37 PASS**.
+- PS2 config success/conflict/no-RX-DMA contract: PASS.
+- Ninja graph counts for `ps2.cpp`, `remoter.cpp`, `msg.cpp`, and
+  `bsp_usart.cpp`: `0` in every non-PS2 image and `1` each in PS2.
+- ELF symbols: no `MX_USARTx_UART_Init` in the five non-PS2 images; PS2 has
+  only `MX_USART1_UART_Init`.
+- Current PS2 linker map: `.ram_d1_bss` is 32 B at `0x20005300` in F407 RAM;
+  `.ram_d2_bss` and `.ram_d3_bss` are zero-sized at `0x20005320`.
+- Current software artifact SHA-256:
+  `7950C1561B81C8B037E500EA39629D8FCA89419EE20F2BB114C70E3F0F69E2C0`.
+- Relative to the old PS2 WIP image, the current software artifact adds
+  `2,432 B` RAM and `2,788 B` Flash. This includes the measured 1536-byte
+  monitor, PS2, and service stack corrections plus the latest shared state.
+
+### Attended hardware validation - precursor artifact
+
+The attended result below applies to the earlier `f3a3274`-based image with
+the same three 1536-byte runtime stacks. The published `42a4b35` artifact was
+software-validated but was not reflashed in this publication task.
+
+- Target board: CMSIS-DAP serial `482752183208`; the other attached DAP
+  `482752132243` was not touched.
+- Final ELF SHA-256:
+  `F7BE6A16A009118715E53A936762D8F9E6E386604D7A98BA182C2B5B92F436A0`.
+  OpenOCD program and verify passed.
+- Receiver on physical C-board `UART2` reached USART1/PB7 through DMA2 Stream2
+  at 9600 8N1 with UART `ErrorCode=0`.
+- Before pairing, repeated `0xAB` bytes correctly produced `link=1`. After
+  pairing, `passed=true`, `stage_mask=0x1ff`, `failure_mask=0`, `link=0`,
+  `generic_source=3`, and `mapping_match=true`.
+- Connected frames reached 14,478 in the final snapshot. Cross produced
+  `buttons=0x4000` and `cross=true`; the left-stick extreme produced raw Y 0
+  and normalized `left_y=1.0`.
+- Final ThreadX high-water margins were PS2 driver 628 B, unified service
+  532 B, and validation monitor 508 B. The PC remained in the ThreadX
+  scheduler and `_tx_thread_system_state` was zero.
+- Motor output remained zero throughout the attended test.
+
+### Remaining boundary
+
+Receiver unplug/offline recovery, exhaustive all-button/four-axis coverage,
+and a separate long-duration soak were not run. This validation closure is
+not a DR16-to-PS2 automatic fallback claim.
+
+```text
+PS2_SOFTWARE_CLOSURE=PASS
+PS2_HARDWARE_LIVE_FRAME=PASS
+PS2_CROSS_MAPPING=PASS
+PS2_LEFT_STICK_MAPPING=PASS
+FLASH_VERIFY=PASS
+MOTOR_OUTPUT=ZERO
+PNX_MODULES_FEATURE_BRANCH_PUSH=PASS
+PARENT_PUBLICATION_TARGET=F4_version
+PARENT_COMMITS=THIS_HISTORY
+HARDWARE_REVALIDATION_42A4B35=NOT_RUN
+VAULT_UPDATE=NOT_RUN
+```
+
 ## Direct BSP source ownership correction — local parent closure, 2026-08-03
 
 This section supersedes every older statement below about the current location
@@ -173,9 +296,14 @@ operation was performed.
 - The latest AHRS service directly contains the Tactical EKF and an enlarged
   8192-byte IMU thread stack. Because AHRS is outside RC2, no runtime,
   memory-budget, or hardware claim is made for it.
-- Shared Remoter sources still use the legacy `RAM_D1_BSS` portability macro;
-  current `memory.h` maps it for non-H7 builds, but a future shared cleanup
-  may rename it without creating an F407 fork.
+- Shared Remoter sources still use the legacy `RAM_D1_BSS` portability macro.
+  This branch adds explicit F407 linker output sections for `.ram_d1_bss`,
+  `.ram_d2_bss`, and `.ram_d3_bss` so PS2/msg/remoter buffers are no longer
+  orphan sections when linked into an F407 image.
+- Shared `remoter::service` can arbitrate among DR16 / VT03 / PS2, but the
+  generated config still emits mutually exclusive source enables. This branch
+  only validates the single-source PS2 path; DR16↔PS2 automatic fallback
+  remains a shared follow-up design task rather than a claimed fix.
 
 ```text
 PNX_TEMPLATE_BASELINE=cf6577765358822a1bc57c1ea17fe65a795ceb62
