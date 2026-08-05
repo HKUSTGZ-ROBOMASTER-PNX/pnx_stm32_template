@@ -19,6 +19,8 @@ option(PNX_ENABLE_USB_CDC "Build the additive F407 USB CDC closure" OFF)
 set(PNX_F407_USB_ENABLED "${PNX_ENABLE_USB_CDC}")
 option(PNX_ENABLE_PWM_A2
     "Build the attended F407 TIM1/PE11 servo vertical slice" OFF)
+option(PNX_ENABLE_PS2_VALIDATION
+    "Build the attended F407 PS2 remoter validation closure" OFF)
 
 foreach(PNX_RETIRED_VALIDATION_OPTION
         PNX_ENABLE_CAN_M2006_VALIDATION
@@ -35,7 +37,7 @@ endforeach()
 
 set(PNX_SELECTED_OPTIONAL_APPLICATIONS 0)
 foreach(PNX_APPLICATION_OPTION
-        PNX_ENABLE_USB_CDC PNX_ENABLE_PWM_A2)
+        PNX_ENABLE_USB_CDC PNX_ENABLE_PWM_A2 PNX_ENABLE_PS2_VALIDATION)
     if(${PNX_APPLICATION_OPTION})
         math(EXPR PNX_SELECTED_OPTIONAL_APPLICATIONS
             "${PNX_SELECTED_OPTIONAL_APPLICATIONS}+1")
@@ -43,7 +45,7 @@ foreach(PNX_APPLICATION_OPTION
 endforeach()
 if(PNX_SELECTED_OPTIONAL_APPLICATIONS GREATER 1)
     message(FATAL_ERROR
-        "USB CDC and PWM/A2 select different applications")
+        "USB CDC, PWM/A2, and PS2 validation select different applications")
 endif()
 
 option(PNX_USB_DEVICE_IDENTITY_CONFIRMED
@@ -94,8 +96,11 @@ set(PNX_BOARD_ROOT
 set(PNX_BSP_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp")
 set(PNX_BOARD_IOC
     "${PNX_BOARD_ROOT}/dji_c_board_f407.ioc")
-set(PNX_BOARD_PARAMS
+set(PNX_BOARD_PARAMS_DEFAULT
     "${CMAKE_CURRENT_SOURCE_DIR}/configs/boards/dji_c_board_f407/params.json")
+set(PNX_BOARD_PARAMS
+    "${PNX_BOARD_PARAMS_DEFAULT}" CACHE FILEPATH
+    "Board params JSON used for config generation")
 set(PNX_BOARD_ROBOT_CONFIG
     "${CMAKE_CURRENT_SOURCE_DIR}/configs/boards/dji_c_board_f407/robot.json")
 set(PNX_BOARD_CUBEMX_DIR
@@ -149,6 +154,7 @@ set(PNX_EMBEDDED_SOURCES
 )
 
 set(PNX_EMBEDDED_INCLUDE_DIRS
+    "${CMAKE_CURRENT_SOURCE_DIR}/demo/common"
     "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/diagnostics/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/dwt/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/indicator/include"
@@ -175,6 +181,24 @@ elseif(PNX_ENABLE_USB_CDC)
         "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/usb/include"
         "${PNX_BSP_ROOT}/usb/src"
     )
+elseif(PNX_ENABLE_PS2_VALIDATION)
+    list(APPEND PNX_EMBEDDED_SOURCES
+        "${PNX_BSP_ROOT}/usart/src/bsp_usart.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/pnx_libs/msg/src/msg.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/pnx_modules/remoter/src/remoter.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/pnx_modules/remoter/src/ps2.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/demo/common/demo_debug.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/demo/cboard/ps2_validation/ps2_validation.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/demo/ps2/ps2_demo.cpp"
+    )
+    list(APPEND PNX_EMBEDDED_INCLUDE_DIRS
+        "${CMAKE_CURRENT_SOURCE_DIR}/pnx_bsp/usart/include"
+        "${PNX_BSP_ROOT}/usart/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/pnx_libs/msg/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/pnx_modules/remoter/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/demo/cboard/ps2_validation"
+        "${CMAKE_CURRENT_SOURCE_DIR}/demo/ps2"
+    )
 else()
     list(APPEND PNX_EMBEDDED_SOURCES
         "${CMAKE_CURRENT_SOURCE_DIR}/demo/cboard/board_smoke/board_smoke.cpp"
@@ -198,6 +222,20 @@ list(FIND PNX_EMBEDDED_SOURCES
 if(NOT PNX_F407_USART_SOURCE_INDEX EQUAL -1)
     set(PNX_F407_USART_ENABLED ON)
 endif()
+set(PNX_F407_USART1_ENABLED OFF)
+set(PNX_F407_USART3_ENABLED OFF)
+set(PNX_F407_USART6_ENABLED OFF)
+if(PNX_F407_USART_ENABLED)
+    if(PNX_F407_USART1_ACTIVE)
+        set(PNX_F407_USART1_ENABLED ON)
+    endif()
+    if(PNX_F407_USART3_ACTIVE)
+        set(PNX_F407_USART3_ENABLED ON)
+    endif()
+    if(PNX_F407_USART6_ACTIVE)
+        set(PNX_F407_USART6_ENABLED ON)
+    endif()
+endif()
 
 add_executable(${PROJECT_NAME})
 add_subdirectory("${PNX_BOARD_CUBEMX_DIR}" board_support)
@@ -219,16 +257,22 @@ elseif(PNX_ENABLE_USB_CDC)
         "PNX_USB_DEVICE_PRODUCT=\"${PNX_USB_DEVICE_PRODUCT}\""
         "PNX_USB_DEVICE_SERIAL=\"${PNX_USB_DEVICE_SERIAL}\""
     )
+elseif(PNX_ENABLE_PS2_VALIDATION)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE PNX_APP_PS2_VALIDATION=1)
 else()
     target_compile_definitions(${PROJECT_NAME} PRIVATE PNX_APP_BOARD_SMOKE=1)
 endif()
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     "PNX_F407_CAN_ENABLED=$<BOOL:${PNX_F407_CAN_ENABLED}>"
     "PNX_F407_USART_ENABLED=$<BOOL:${PNX_F407_USART_ENABLED}>"
+    "PNX_F407_USART1_ENABLED=$<BOOL:${PNX_F407_USART1_ENABLED}>"
+    "PNX_F407_USART3_ENABLED=$<BOOL:${PNX_F407_USART3_ENABLED}>"
+    "PNX_F407_USART6_ENABLED=$<BOOL:${PNX_F407_USART6_ENABLED}>"
     "PNX_F407_USB_ENABLED=$<BOOL:${PNX_F407_USB_ENABLED}>"
 )
 
 message(STATUS "PnX target: DJI C-board STM32F407")
 message(STATUS "PnX USB CDC closure: ${PNX_ENABLE_USB_CDC}")
 message(STATUS "PnX PWM/A2 closure: ${PNX_ENABLE_PWM_A2}")
+message(STATUS "PnX PS2 validation closure: ${PNX_ENABLE_PS2_VALIDATION}")
 list(REMOVE_ITEM CMAKE_C_IMPLICIT_LINK_LIBRARIES ob)

@@ -237,11 +237,31 @@ SECTIONS
     *(.dma_buffer)
     *(.dma_buffer*)
     *(COMMON)
+    . = ALIGN(4);
+  } >RAM
 
-      . = ALIGN(4);
+  .ram_d1_bss (NOLOAD) : ALIGN(4)
+  {
+    *(.ram_d1_bss)
+    *(.ram_d1_bss*)
+    . = ALIGN(4);
+  } >RAM
+
+  .ram_d2_bss (NOLOAD) : ALIGN(4)
+  {
+    *(.ram_d2_bss)
+    *(.ram_d2_bss*)
+    . = ALIGN(4);
+  } >RAM
+
+  .ram_d3_bss (NOLOAD) : ALIGN(4)
+  {
+    *(.ram_d3_bss)
+    *(.ram_d3_bss*)
+    . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
-      PROVIDE( __bss_end = .);
+    PROVIDE( __bss_end = .);
   } >RAM
   PROVIDE( __non_tls_bss_start = ADDR(.bss) );
 

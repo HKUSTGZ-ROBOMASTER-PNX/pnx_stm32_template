@@ -23,6 +23,15 @@
 #ifndef PNX_F407_USART_ENABLED
 #error "PNX_F407_USART_ENABLED must be derived from the image source graph"
 #endif
+#ifndef PNX_F407_USART1_ENABLED
+#error "PNX_F407_USART1_ENABLED must be derived from the image source graph"
+#endif
+#ifndef PNX_F407_USART3_ENABLED
+#error "PNX_F407_USART3_ENABLED must be derived from the image source graph"
+#endif
+#ifndef PNX_F407_USART6_ENABLED
+#error "PNX_F407_USART6_ENABLED must be derived from the image source graph"
+#endif
 
 #include "app_threadx.h"
 #include "main.h"
@@ -109,9 +118,13 @@ int main(void)
   MX_CAN1_Init();
   MX_CAN2_Init();
 #endif
-#if PNX_F407_USART_ENABLED
+#if PNX_F407_USART3_ENABLED
   MX_USART3_UART_Init();
+#endif
+#if PNX_F407_USART6_ENABLED
   MX_USART6_UART_Init();
+#endif
+#if PNX_F407_USART1_ENABLED
   MX_USART1_UART_Init();
 #endif
 #if PNX_F407_USB_ENABLED

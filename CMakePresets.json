@@ -55,6 +55,17 @@
         "PNX_ENABLE_USB_CDC": false,
         "PNX_ENABLE_PWM_A2": true
       }
+    },
+    {
+      "name": "f407-ps2-debug",
+      "inherits": "f407-base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "PNX_ENABLE_USB_CDC": false,
+        "PNX_ENABLE_PWM_A2": false,
+        "PNX_ENABLE_PS2_VALIDATION": true,
+        "PNX_BOARD_PARAMS": "${sourceDir}/configs/boards/dji_c_board_f407/params.ps2.json"
+      }
     }
   ],
   "buildPresets": [
@@ -77,6 +88,10 @@
     {
       "name": "f407-pwm-a2-debug",
       "configurePreset": "f407-pwm-a2-debug"
+    },
+    {
+      "name": "f407-ps2-debug",
+      "configurePreset": "f407-ps2-debug"
     }
   ]
 }
