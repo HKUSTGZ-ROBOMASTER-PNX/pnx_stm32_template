@@ -49,13 +49,13 @@ runtime registry、factory、service locator、function-pointer table，亦
 | Core Release | `f407-release` | RC2 local PASS，RAM 49,792 B／Flash 15,188 B | 最小 release build |
 | USB CDC Debug | `f407-usb-cdc-debug` | RC2 local PASS，RAM 66,040 B／Flash 67,952 B | 可選 USB CDC |
 | USB CDC Release | `f407-usb-cdc-release` | RC2 local PASS，RAM 66,000 B／Flash 40,056 B | 可選 USB CDC |
-| PWM/A2 Debug | `f407-pwm-a2-debug` | RC2 local PASS，RAM 49,864 B／Flash 27,656 B | attended hardware validation，不是產品 composition |
+| PWM/A2 Debug | `f407-pwm-a2-debug` | local PASS，RAM 49,840 B／Flash 28,240 B | attended hardware validation，不是產品 composition |
 | PS2 Debug | `f407-ps2-debug` | software PASS，RAM 55,456 B／Flash 50,856 B；precursor artifact hardware PASS | USART1 RX-DMA PS2 remoter validation，不是產品 composition |
 
 原有五個 image 數字與 `5f222b68530b135fb46bc3c12de8127ef5fff6f0`
-一致；PS2 數字已在 `pnx_modules@42a4b35` 上 fresh configure/build/link。
-F407 Direct BSP 仍 pin 已發布的
-`da09febe8f5bfe66993010247d4d6731d0ca492b`。原有五個 preset 與新增的
+一致；PS2 數字最初在 `pnx_modules@42a4b35` 上驗證，本次 dependency
+convergence 的新結果見 `HANDOFF.md`。F407 Direct BSP 使用官方
+`F4_version_bsp`。原有五個 preset 與新增的
 PS2 preset 均為 0
 compiler/linker warnings、恰有一個
 `app_start`，且沒有重複的 strong `bsp::*` definition。
@@ -261,25 +261,27 @@ closure 的失敗。
 
 ## Submodule 與發布邊界
 
-目前 submodule pins 如下；Device/Lib 保留既有 baseline，BSP 使用已發布的
-F407-specific commit，而 Modules 使用從官方 `main@44ff9ab` 建立的已發布
-PS2 stack 修正分支：
+目前本地 submodule pins 如下。BSP 和 Modules 使用各自的 F407 分支；
+Devices/Libs 繼續共用官方 `main`：
 
 ```text
-pnx_bsp      da09febe8f5bfe66993010247d4d6731d0ca492b
-pnx_devices  2349cc108c9ed477ccdcd700e802ea888975cdfd
-pnx_libs     e7c3e7a2b9d825586ab3e0c413877180c4295df8
-pnx_modules  42a4b35b63ef7b8528ad756e03d17f1c09bab9af
+component    branch                        local pin
+pnx_bsp      F4_version_bsp                ee59c97a852586eb7f6fb50b402f2fe9ed112cbc
+pnx_devices  main                          5c418a4d2c11bf56dddc81b8e374146b659d4c2a
+pnx_libs     main                          e7c3e7a2b9d825586ab3e0c413877180c4295df8
+pnx_modules  fix/f407-ps2-stack             dffaca9d7fbabd139d09096918b56a4ba7a0eaa0
 ```
 
-`pnx_modules/fix/f407-ps2-stack` 僅補 F407 實測所需的 PS2 1536 B stack；
-沒有合併或直接修改 modules `main`。`pnx_bsp` 的 F407-specific branch
-則同時保有 `*/include` public contract 與 `*/src` HAL direct
+`pnx_modules/fix/f407-ps2-stack` 以非重寫 merge 吸收共用
+`main@5be2240`，同時保留 F407 實測所需的 PS2 1536 B stack。上表的
+modules merge commit 目前只存在本地，尚未 push。`pnx_bsp` 的
+F407-specific branch 同時保有 `*/include` public contract 與 `*/src` HAL direct
 implementation。Parent repository 只 pin 可重現 commit、提供 CubeMX
 generated handles，並由 CMake 選擇 image 所需 source。
 
-目前選取的 `pnx_modules` revision 內含 PS2 receiver 與 Tactical AHRS source，但 RC2
-image graph 不選入兩者。此 branch 另外加入 `f407-ps2-debug` validation
+目前選取的 `pnx_modules` revision 內含 PS2 receiver、DM IMU/AHRS 與
+referee source，但一般 F407 image graph 不會因此自動選入它們。此 branch
+另外加入 `f407-ps2-debug` validation
 closure，使用獨立 params 與 demo 驗證 F407 上的單一來源 PS2 路徑；它不
 宣稱 DR16↔PS2 自動 fallback 已可用。PS2 會把綁定 UART 重設為 9600 / 8N1 /
 DMA RX，因此不能與 DR16 共享同一條 UART。C-board 外殼的 `UART2` 對應
@@ -296,7 +298,7 @@ API，並驗證 F407 config generation；SPI/PWM/USART contract tests 也會
 PS2 的實機證據另記錄於 `HANDOFF.md` 與 `demo/ps2/README.md`。
 
 新的 F407 `pnx_bsp` SHA 已由官方 `F4_version_bsp` remote branch 提供；
-PS2 modules SHA 亦由官方 `fix/f407-ps2-stack` remote branch 提供。
-`F4_version` 發布後仍應從 remote recursive clone 重跑六個 presets、完整
+本地 PS2 modules merge 尚待審查與發布。`F4_version` 發布後仍應從 remote
+recursive clone 重跑六個 presets、完整
 Host suite、F407 source graph 與 symbol gates；全部通過後才能建立
 annotated tag。H7 regression 不屬於此流程。

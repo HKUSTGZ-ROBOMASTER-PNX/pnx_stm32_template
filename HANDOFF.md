@@ -1,5 +1,54 @@
 # F407 Engineering Handoff
 
+## Selective upstream dependency convergence - local validation, 2026-08-30
+
+This section supersedes older dependency-pin and modules-publication statements
+for the current local `feat/f407-ps2-validation` worktree. It does not claim
+that any official branch has been pushed or that prior hardware was rerun.
+
+### Actual local changes
+
+- Kept the F407 parent on `pnx_template/F4_version` and retained the Direct BSP
+  boundary. The parent now selects `pnx_bsp/F4_version_bsp@ee59c97`, whose
+  additional change is the real four-channel F407 PWM implementation.
+- Locally merged `pnx_modules/main@5be2240` into
+  `fix/f407-ps2-stack@42a4b35` without rewriting published history. The local
+  merge is `dffaca9`; its only F407-specific source delta against current main
+  remains the measured PS2 stack change from 768 B to 1536 B.
+- Advanced shared `pnx_devices/main` from `2349cc1` to `5c418a4` and retained
+  `pnx_libs/main@e7c3e7a`.
+- Added `branch = fix/f407-ps2-stack` to `.gitmodules` so the F407 modules
+  authority is explicit.
+- Reviewed H7 BSP main through `7fd24f1`. Its heating lease depends on H7
+  `TIM3_CH4`, `TIM6` DMA, Cortex-M7 DCache and D2 RAM and was intentionally not
+  copied. No H7 IOC, HAL binding, timer/DMA, startup or linker source changed.
+
+### Fresh validation
+
+- Pre-change Host baseline: **37/37 PASS**; `f407-ps2-debug` build PASS.
+- Post-change focused contracts: **6/6 PASS**.
+- Post-change full Host suite: **37/37 PASS**.
+- Fresh configure/build/link: all six F407 presets PASS.
+- Ninja command-graph scan across all six presets found zero selected DM IMU,
+  referee, TIM6, heating-lease, D2-RAM, STM32H7 or generated H7 binding source.
+- Final RAM/Flash remained unchanged except `f407-pwm-a2-debug`, which moved to
+  49,840 B RAM and 28,240 B Flash with the four-channel F407 BSP.
+- ELF SHA-256 values:
+  - `f407-debug`: `4A17CC506D5CE6539EAD3CBEA2CD75D944E740AA5BAF9F773DBF318B62210B9D`
+  - `f407-release`: `169B5520A96380078C687FCEC13846D9AEA2148E76D015A49586F56099F4BAB3`
+  - `f407-usb-cdc-debug`: `7AA2E6DFA91FA9C8AD2387C88E8B5A8753A1865A4FE09CDA6E76D7BDB357B429`
+  - `f407-usb-cdc-release`: `2D25208D086D93B4C32D41A3660C0E381FDAD8B5B65496C3BDD62DE5C309DF2F`
+  - `f407-pwm-a2-debug`: `86C21C4EA7D41F33153313346A2C2DECA1FBBD53AFF4B90E6EA8B6FDFDB329DF`
+  - `f407-ps2-debug`: `7950C1561B81C8B037E500EA39629D8FCA89419EE20F2BB114C70E3F0F69E2C0`
+
+### Evidence boundary and next gate
+
+- `HARDWARE=NOT_RUN`, `PUSH=NOT_RUN`, `VAULT=NOT_MODIFIED`.
+- The modules merge and parent dependency commit remain local. Publish modules
+  first, then the F407 parent, only after user review.
+- Do not update `chassis_x_arm` yet. Its later synchronization must also carry
+  the hardware-confirmed J3 `servo_pe14` seed of `900`.
+
 ## Official PS2 module integration - published software closure, 2026-08-06
 
 This section supersedes older PS2 availability and shared-module pin statements

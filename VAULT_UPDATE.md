@@ -2,6 +2,24 @@
 
 This file is a proposal only. The Vault was not modified.
 
+## 2026-08-30 F407 selective dependency-convergence proposal
+
+- Record local F407 authority as `pnx_template/F4_version`,
+  `pnx_bsp/F4_version_bsp`, and `pnx_modules/fix/f407-ps2-stack`; devices and
+  libraries continue to use their shared main branches.
+- Record local pins BSP `ee59c97`, modules merge `dffaca9`, devices `5c418a4`,
+  and libs `e7c3e7a`. The modules merge absorbs main `5be2240` while retaining
+  the F407 PS2 1536 B stack delta.
+- Record the explicit exclusion of the H7 PWM heating lease: it depends on
+  H7 TIM3_CH4, TIM6 DMA, Cortex-M7 DCache and D2 RAM. No H7 generated binding,
+  IOC, HAL, timer/DMA, startup or linker source was imported.
+- Record fresh software evidence: focused contracts **6/6 PASS**, full Host
+  **37/37 PASS**, six F407 presets fresh configure/build/link PASS, and all six
+  selected command graphs contain zero DM IMU/referee/H7 heating closure.
+- Record `HARDWARE=NOT_RUN`, `PUSH=NOT_RUN`, and `VAULT=NOT_MODIFIED`.
+- Keep the vehicle synchronization, J3 `servo_pe14=900`, hardware validation,
+  modules publication and parent publication behind separate user review.
+
 ## 2026-08-06 F407 official PS2 hardware-validation proposal
 
 - Record the approved integration boundary: keep the F407 parent and Direct
