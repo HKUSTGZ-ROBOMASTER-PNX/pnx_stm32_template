@@ -2,6 +2,14 @@
 
 This file is a proposal only. The Vault was not modified.
 
+## 2026-08-31 F407 baseline publication proposal
+
+- Record that `pnx_modules:fix/f407-ps2-stack@dffaca9` and then
+  `pnx_template:F4_version@d92c9be` were published as fast-forwards.
+- Preserve the prior software evidence; no new flash or hardware result was
+  produced during publication.
+- The Vault was not modified.
+
 ## 2026-08-30 F407 selective dependency-convergence proposal
 
 - Record local F407 authority as `pnx_template/F4_version`,

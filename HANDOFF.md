@@ -1,5 +1,20 @@
 # F407 Engineering Handoff
 
+## Official F407 baseline publication - 2026-08-31
+
+**Status: PUBLISHED; SOFTWARE EVIDENCE FROM 2026-08-30 RETAINED; NO NEW
+HARDWARE RUN.**
+
+- Published `pnx_modules:fix/f407-ps2-stack` at
+  `dffaca9d7fbabd139d09096918b56a4ba7a0eaa0` first.
+- Then fast-forwarded official `pnx_template:F4_version` from `354e257` to
+  `d92c9beba01acaa54808fd6a818fd2c5dd856603`.
+- Confirmed BSP `ee59c97`, devices `5c418a4`, and libs `e7c3e7a` were already
+  reachable from their public remotes before publication.
+- No force push, rebase, generated-source edit, hardware action, or Vault
+  write occurred. The two pre-existing untracked historical task directories
+  remain outside this publication commit.
+
 ## Selective upstream dependency convergence - local validation, 2026-08-30
 
 This section supersedes older dependency-pin and modules-publication statements
