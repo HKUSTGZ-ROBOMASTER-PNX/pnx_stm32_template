@@ -12,7 +12,7 @@
         <link rel="prev" href="../configuration/">
       
       
-        <link rel="next" href="../startup/">
+        <link rel="next" href="../thread/">
       
       
         
@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -65,7 +67,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="PnX Documentation" class="md-header__button md-logo" aria-label="PnX Documentation" data-md-component="logo">
       
@@ -121,9 +125,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -131,9 +135,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -189,16 +193,22 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -236,6 +246,8 @@
           
   
   
+    
+  
   开始使用
 
         </a>
@@ -252,11 +264,13 @@
     
     
       <li class="md-tabs__item">
-        <a href="../concepts/thread/" class="md-tabs__link">
+        <a href="../concepts/interrupt-callback/" class="md-tabs__link">
           
   
   
-  架构的一些concepts
+    
+  
+  理解 PnX
 
         </a>
       </li>
@@ -275,6 +289,8 @@
         <a href="../api/" class="md-tabs__link">
           
   
+  
+    
   
   API Reference
 
@@ -296,6 +312,8 @@
           
   
   
+    
+  
   维护资料
 
         </a>
@@ -307,7 +325,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -334,6 +358,18 @@
     </a>
     PnX Documentation
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -374,14 +410,24 @@
   
     
     
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
+    
       
         
         
       
-      
-        
       
     
     
@@ -547,19 +593,19 @@
   <a href="#paramsjson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        params.json：外设角色、功能和运行参数
+        params.json：
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="params.json：外设角色、功能和运行参数">
+    <nav class="md-nav" aria-label="params.json：">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build
+        build ：是否编译
       
     </span>
   </a>
@@ -681,6 +727,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    创建线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../startup/" class="md-nav__link">
         
   
@@ -717,11 +791,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -739,7 +815,7 @@
   <span class="md-ellipsis">
     
   
-    架构的一些concepts
+    理解 PnX
   
 
     
@@ -755,39 +831,11 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    架构的一些concepts
+    理解 PnX
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../concepts/thread/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    线程
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -832,11 +880,23 @@
   
     
     
-    
-    
-      
       
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -847,8 +907,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../api/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -862,8 +923,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
@@ -877,32 +944,6 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    总览
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -912,11 +953,33 @@
   
     
     
-    
-    
-      
       
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -1280,11 +1343,17 @@
   
     
     
-    
-    
-      
       
         
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -1424,11 +1493,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1512,11 +1583,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1607,11 +1680,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1716,19 +1791,19 @@
   <a href="#paramsjson" class="md-nav__link">
     <span class="md-ellipsis">
       
-        params.json：外设角色、功能和运行参数
+        params.json：
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="params.json：外设角色、功能和运行参数">
+    <nav class="md-nav" aria-label="params.json：">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#build" class="md-nav__link">
     <span class="md-ellipsis">
       
-        build
+        build ：是否编译
       
     </span>
   </a>
@@ -1845,16 +1920,72 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href=".." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    首页
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../project-structure/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    开始使用
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
 
 
+  
+    <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template/edit/main/docs/configuration-reference.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
 
 <h1 id="_1">配置参考</h1>
-<p>这页只说明 <code>configs/params.json</code> 和 <code>configs/robot.json</code>。前者选择 MCU 外设的应用角色和运行参数，后者描述这台机器人实际装了哪些设备。修改后执行 CMake configure；生成的 <code>config.hpp</code> 和 <code>robot_config.hpp</code> 只读，不能手改。完整生效步骤见<a href="../configuration/">配置</a>。</p>
-<h2 id="paramsjson"><code>params.json</code>：外设角色、功能和运行参数</h2>
-<h3 id="build"><code>build</code></h3>
+<p><code>configs/params.json</code> 和 <code>configs/robot.json</code>更详细的配置，完整步骤见<a href="../configuration/">配置</a>。</p>
+<h2 id="paramsjson"><code>params.json</code>：</h2>
+<h3 id="build"><code>build</code> ：是否编译</h3>
 <table>
 <thead>
 <tr>
@@ -1867,7 +1998,7 @@
 <tr>
 <td><code>build.usbx</code></td>
 <td><code>true</code></td>
-<td>板卡同时具备 USB 时，编译 USBX 与 USB CDC BSP。应用仍需调用 <code>bsp::usb::init()</code>。</td>
+<td>编译 USBX 与 USB CDC BSP</td>
 </tr>
 </tbody>
 </table>
@@ -1876,7 +2007,7 @@
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
 </code></pre></div>
 <h3 id="bindings"><code>bindings</code>：给应用使用的外设取名字</h3>
-<p>这些绑定生成 <code>app::</code> 下的 C++ 常量。绑定目标必须已在 <code>board.ioc</code> 中启用；应用代码使用角色名，不写具体 UART、SPI、ADC 或 CAN 实例。</p>
+<p>绑定生成 <code>app::</code> 下的 C++ 常量，应用层直接使用自定义的名字，不应该再出现具体的"usart1/fdcan1/tim3_ch4"等可能散落在各处的外设实例</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"bindings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">"remoter_uart"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uart5"</span><span class="p">,</span>
@@ -1912,8 +2043,8 @@
 <tbody>
 <tr>
 <td><code>remoter_uart</code></td>
-<td><code>app::uart::dr16</code>、<code>app::uart::ps2</code></td>
-<td>DR16、PS2 使用它。</td>
+<td><code>app::uart::dr16</code>、<code>app::uart::vt03</code>、<code>app::uart::ps2</code></td>
+<td>DR16、VT03、PS2 使用它。</td>
 </tr>
 <tr>
 <td><code>referee_uart</code></td>
@@ -1942,7 +2073,6 @@
 </tr>
 </tbody>
 </table>
-<p>VT03 是当前例外：它固定使用 <code>app::uart::vt03</code>，即 <code>uart7</code>，并要求 <code>board.ioc</code> 为 UART7 配置 RX DMA；不使用 <code>remoter_uart</code>。</p>
 <h3 id="can">CAN 与诊断</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">"can"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1956,21 +2086,23 @@
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">}</span>
 </code></pre></div>
-<ul>
-<li><code>can.&lt;FDCAN&gt;.id_type</code> 可为 <code>standard</code> / <code>std</code> 或 <code>extended</code> / <code>ext</code>。它决定生成的 CAN 接收过滤器 ID 类型；CAN Classic、FD、以及 FD 是否开启 BRS 都直接由 <code>board.ioc</code> 的 <code>FrameFormat</code> 决定。</li>
-<li>接收 FIFO 不在 <code>params.json</code>、<code>robot.json</code> 或板卡 profile 中配置。每个 FDCAN 的 FIFO0 / FIFO1 只在 <code>board.ioc</code> 中设置；当前 BSP 从 CubeMX 生成的 HAL handle 判断实际启用的 FIFO，并要求每个 FDCAN 恰好启用一个接收 FIFO。</li>
-<li><code>can_diag.sample_period_ms</code> 和 <code>can_diag.window_size</code> 是 CAN 诊断实现实际使用的参数；<code>window_size</code> 必须在 1 到 3600。</li>
-<li><code>can_diag.enabled</code> 会生成 <code>config::feature::can_diag</code>。为 <code>true</code> 时，首次成功 <code>bsp::can::init()</code> 会创建诊断采样定时器，并在 CAN 收发、错误和 FIFO 溢出路径统计指标；为 <code>false</code> 时这些路径不会启用诊断统计。</li>
-</ul>
+<ol>
+<li><code>can.&lt;FDCAN&gt;.id_type</code> : </li>
+<li><code>standard</code> / <code>std</code> 标准帧</li>
+<li><code>extended</code> / <code>ext</code> 拓展帧</li>
+<li>FD or Classic 直接由.ioc决定，不需要在这配置</li>
+<li><code>can_diag</code> = <code>true</code> 会创建诊断采样定时器，可以统计各类CAN错误，方便debug。</li>
+<li>配置一般用默认的就行。<code>window_size</code> 必须在 1 到 3600。</li>
+</ol>
 <h3 id="ahrsdmimu-referee">AHRS、DMIMU、遥控器与 Referee</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">"ahrs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">"ahrs"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//一般不需要改</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">"imu_offset_x"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">"imu_thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
 <a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">"temp_thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
 <a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nt">"target_temp"</span><span class="p">:</span><span class="w"> </span><span class="mf">45.0</span>
 <a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">"dmimu"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="nt">"dmimu"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//一般不需要改</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">"communication_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"active"</span><span class="p">,</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nt">"offline_timeout_ticks"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
 <a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">"thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
@@ -1978,18 +2110,15 @@
 <a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="nt">"request_period_ticks"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
 <a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="p">},</span>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="nt">"remoter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dr16"</span><span class="p">,</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dr16"</span><span class="p">,</span><span class="w"> </span><span class="c1">//TODO：</span>
 <a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="nt">"thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
 <a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="nt">"rx_timeout_ticks"</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="nt">"offline_timeout_ticks"</span><span class="p">:</span><span class="w"> </span><span class="mi">120</span><span class="p">,</span>
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="nt">"ps2_offline_timeout_ticks"</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span>
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">    </span><span class="nt">"ps2_frame_timeout_ticks"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="nt">"ps2_deadzone"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08</span>
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">  </span><span class="nt">"referee"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="nt">"thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span>
-<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a><span class="p">}</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">  </span><span class="nt">"referee"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="nt">"thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="w"> </span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="p">}</span>
 </code></pre></div>
 <table>
 <thead>
@@ -2001,6 +2130,16 @@
 </thead>
 <tbody>
 <tr>
+<td><code>remoter</code></td>
+<td><code>source</code>、线程优先级、超时、PS2 死区</td>
+<td><strong><code>source</code> 只能是 <code>dr16</code>、<code>vt03</code> 或 <code>ps2</code></strong></td>
+</tr>
+<tr>
+<td><code>referee</code></td>
+<td><code>thread_priority</code></td>
+<td>生成线程优先级</td>
+</tr>
+<tr>
 <td><code>ahrs</code></td>
 <td><code>imu_offset_x</code>、两个线程优先级、<code>target_temp</code></td>
 <td>生成 <code>params::ahrs</code>，作为 AHRS 默认配置。</td>
@@ -2010,36 +2149,19 @@
 <td><code>communication_mode</code>、离线超时、线程优先级、接收等待、请求周期</td>
 <td>生成 <code>params::dmimu</code>。模式只能是 <code>active</code> 或 <code>request</code>；超时与接收等待必须大于 0，<code>request</code> 模式的请求周期也必须大于 0。</td>
 </tr>
-<tr>
-<td><code>remoter</code></td>
-<td><code>source</code>、线程优先级、超时、PS2 死区</td>
-<td><code>source</code> 只能是 <code>dr16</code>、<code>vt03</code> 或 <code>ps2</code>，并决定编译哪一种来源。其余字段生成 <code>params::remoter</code>。</td>
-</tr>
-<tr>
-<td><code>referee</code></td>
-<td><code>thread_priority</code></td>
-<td>生成 <code>params::referee::thread_priority</code>。</td>
-</tr>
 </tbody>
 </table>
 <h3 id="usb">USB 与测试参数</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"usb"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"usb"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//一般不需要改</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">"read_thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">"write_thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">"period_ticks"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="p">},</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">"thread_priority"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="nt">"report_uart"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uart7"</span><span class="p">,</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="nt">"auto_run_on_boot"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="p">}</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">}</span>
 </code></pre></div>
 <ul>
 <li><code>usb</code> 三项生成 <code>params::usb</code>，是 <code>bsp::usb::config</code> 的默认收发线程参数。</li>
-<li><code>test.report_uart</code> 会生成 <code>app::uart::test_report</code>，且不能与当前启用的遥控器 UART 相同。</li>
-<li>注意：<code>test.thread_priority</code> 和 <code>test.auto_run_on_boot</code> 当前只生成常量，仓库内没有运行代码读取它们；修改不会改变运行行为。</li>
 </ul>
 <h2 id="robotjson"><code>robot.json</code>：当前机器人安装的设备</h2>
 <h3 id="_2">配置电机</h3>
@@ -2197,7 +2319,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.indexes", "content.action.edit", "toc.follow", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>

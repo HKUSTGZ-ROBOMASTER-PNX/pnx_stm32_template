@@ -47,6 +47,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -63,7 +65,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -72,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#agent" class="md-skip">
+        <a href="#agent-context" class="md-skip">
           Skip to content
         </a>
       
@@ -84,7 +86,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="PnX Documentation" class="md-header__button md-logo" aria-label="PnX Documentation" data-md-component="logo">
       
@@ -119,9 +123,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -129,9 +133,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -187,16 +191,22 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -232,6 +242,8 @@
           
   
   
+    
+  
   开始使用
 
         </a>
@@ -248,11 +260,13 @@
     
     
       <li class="md-tabs__item">
-        <a href="../concepts/thread/" class="md-tabs__link">
+        <a href="../concepts/interrupt-callback/" class="md-tabs__link">
           
   
   
-  架构的一些concepts
+    
+  
+  理解 PnX
 
         </a>
       </li>
@@ -271,6 +285,8 @@
         <a href="../api/" class="md-tabs__link">
           
   
+  
+    
   
   API Reference
 
@@ -294,6 +310,8 @@
           
   
   
+    
+  
   维护资料
 
         </a>
@@ -305,7 +323,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -332,6 +356,18 @@
     </a>
     PnX Documentation
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -370,11 +406,21 @@
   
     
     
-    
-    
-      
       
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -505,6 +551,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    创建线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../startup/" class="md-nav__link">
         
   
@@ -541,11 +615,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -563,7 +639,7 @@
   <span class="md-ellipsis">
     
   
-    架构的一些concepts
+    理解 PnX
   
 
     
@@ -579,39 +655,11 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    架构的一些concepts
+    理解 PnX
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../concepts/thread/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    线程
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -656,11 +704,23 @@
   
     
     
-    
-    
-      
       
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -671,8 +731,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../api/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -686,8 +747,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
@@ -701,32 +768,6 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    总览
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -736,11 +777,33 @@
   
     
     
-    
-    
-      
       
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -1104,11 +1167,17 @@
   
     
     
-    
-    
-      
       
         
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -1248,11 +1317,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1336,11 +1407,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1433,14 +1506,16 @@
   
     
     
+      
+        
+      
     
     
+    
       
         
         
       
-      
-        
       
     
     
@@ -1547,10 +1622,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#read-first" class="md-nav__link">
     <span class="md-ellipsis">
       
-        先读这些
+        Read first
       
     </span>
   </a>
@@ -1558,10 +1633,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#where-to-look-by-task" class="md-nav__link">
     <span class="md-ellipsis">
       
-        按任务补充阅读
+        Where to look by task
       
     </span>
   </a>
@@ -1569,10 +1644,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#project-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        约束
+        Project rules
       
     </span>
   </a>
@@ -1622,10 +1697,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#read-first" class="md-nav__link">
     <span class="md-ellipsis">
       
-        先读这些
+        Read first
       
     </span>
   </a>
@@ -1633,10 +1708,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#where-to-look-by-task" class="md-nav__link">
     <span class="md-ellipsis">
       
-        按任务补充阅读
+        Where to look by task
       
     </span>
   </a>
@@ -1644,10 +1719,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#project-rules" class="md-nav__link">
     <span class="md-ellipsis">
       
-        约束
+        Project rules
       
     </span>
   </a>
@@ -1665,58 +1740,117 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href=".." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    首页
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    维护资料
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
 
 
+  
+    <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template/edit/main/docs/agent-context.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
 
-<h1 id="agent">给 Agent 的项目资料</h1>
-<p>本页是可提交的项目阅读索引，可在没有本地 <code>AGENT.md</code> 时提供给 Agent。它描述资料位置，不替代具体任务要求；修改前仍应先阅读相关源码。</p>
-<h2 id="_1">先读这些</h2>
+
+<h1 id="agent-context">Agent Context</h1>
+<p>This page is a short project index for coding agents. It does not replace the task request. Before changing code or documentation, inspect the current implementation that owns the behavior.</p>
+<h2 id="read-first">Read first</h2>
 <ol>
-<li><a href="../project-structure/">项目结构</a>：目录职责和依赖方向。</li>
-<li><a href="../configuration/">配置</a> 与 <a href="../configuration-reference/">配置参考</a>：哪些文件可改、生成文件从哪里来。</li>
-<li><a href="../startup/">启动流程</a>：<code>app_start()</code> 与 ThreadX 的真实入口关系。</li>
-<li><a href="../api/">API Reference</a>：使用者可直接调用的接口；写示例或修改行为前先核对公开头文件和实现。</li>
+<li><code>docs/project-structure.md</code> — directory responsibilities and dependency direction.</li>
+<li><code>docs/configuration.md</code> and <code>docs/configuration-reference.md</code> — editable configuration and generated outputs.</li>
+<li><code>docs/startup.md</code> — the real <code>app_start()</code> / ThreadX startup path.</li>
+<li><code>docs/api/index.md</code> — user-facing API pages and usage examples.</li>
 </ol>
-<h2 id="_2">按任务补充阅读</h2>
+<h2 id="where-to-look-by-task">Where to look by task</h2>
 <table>
 <thead>
 <tr>
-<th>任务</th>
-<th>资料</th>
+<th>Task</th>
+<th>Start here</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>修改板卡、外设、CAN 或生成逻辑</td>
-<td><code>board/board.ioc</code>、<code>boards/&lt;board&gt;/board.json</code>、<code>configs/cmake/</code>、配置文档</td>
+<td>Board, peripheral, CAN, or generator changes</td>
+<td><code>board/board.ioc</code>, <code>boards/&lt;board&gt;/board.json</code>, <code>configs/cmake/</code>, configuration docs</td>
 </tr>
 <tr>
-<td>修改机器人设备</td>
-<td><code>configs/robot.json</code>、生成的 <code>robot_config.hpp</code>、对应 Device API 与源码</td>
+<td>Robot device configuration</td>
+<td><code>configs/robot.json</code>, generated <code>robot_config.hpp</code>, the matching Device API and implementation</td>
 </tr>
 <tr>
-<td>修改通信或回调</td>
-<td><a href="../concepts/interrupt-callback/">通用回调</a>、对应 BSP / Module API 和公开头文件</td>
+<td>Communication or callbacks</td>
+<td><code>docs/concepts/interrupt-callback.md</code>, the matching BSP/Module API, then its public header and implementation</td>
 </tr>
 <tr>
-<td>修改板端检测</td>
-<td><a href="../diagnose/README.md">diagnose/README.md</a> 与目标目录 README、实现源码</td>
+<td>Board diagnostics</td>
+<td><code>diagnose/README.md</code>, the target diagnostic directory, then its implementation</td>
 </tr>
 <tr>
-<td>修改 CAN 诊断</td>
-<td><a href="../pnx_bsp/can/README.md">pnx_bsp/can/README.md</a>、<code>bsp_can.cpp</code>、<code>bsp_can_diag.cpp</code></td>
+<td>CAN diagnostics</td>
+<td><code>pnx_bsp/can/README.md</code>, <code>pnx_bsp/can/src/bsp_can.cpp</code>, and <code>bsp_can_diag.cpp</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="_3">约束</h2>
+<h2 id="project-rules">Project rules</h2>
 <ul>
-<li><code>configs/generated/</code> 由 CMake 生成，不能手改。</li>
-<li><code>.ioc</code> 改动后先用 CubeMX 生成板级代码，再 CMake configure。</li>
-<li>文档面向框架使用者；API 行为、初始化顺序、线程与回调上下文必须以当前源码为准。</li>
-<li><code>diagnose/</code> 是当前默认入口；开始机器人业务时应替换 <code>app_start()</code>，不要把诊断测试命令带进控制程序。</li>
+<li>Treat current source behavior as authoritative. Do not infer API behavior from filenames or old docs.</li>
+<li><code>configs/generated/</code> is CMake output. Never edit it by hand.</li>
+<li>After changing <code>board/board.ioc</code>, regenerate the CubeMX board code, then run CMake configure and build.</li>
+<li>After changing JSON configuration, rerun CMake configure so generated headers are refreshed.</li>
+<li>Keep examples focused on framework users; avoid private helpers and implementation detail.</li>
+<li><code>diagnose/</code> is the current default application entry. Replace <code>app_start()</code> when starting robot application code; do not carry diagnostic test commands into the control program.</li>
+<li>Verify initialization order, callback context, blocking behavior, ownership, and object lifetime from the implementation before documenting or changing them.</li>
 </ul>
 
 
@@ -1773,7 +1907,7 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.indexes", "content.action.edit", "toc.follow", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>

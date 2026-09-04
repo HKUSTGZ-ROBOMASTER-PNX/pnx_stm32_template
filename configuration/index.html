@@ -49,6 +49,8 @@
       
     
     
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -65,7 +67,7 @@
     
     
     
-    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -86,7 +88,9 @@
     
       
 
-<header class="md-header" data-md-component="header">
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
     <a href=".." title="PnX Documentation" class="md-header__button md-logo" aria-label="PnX Documentation" data-md-component="logo">
       
@@ -121,9 +125,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="深色模式"  type="radio" name="__palette" id="__palette_0">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="cyan"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
     
-      <label class="md-header__button md-icon" title="深色模式" for="__palette_1" hidden>
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -131,9 +135,9 @@
     
     
     
-    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="浅色模式"  type="radio" name="__palette" id="__palette_1">
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="cyan"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
     
-      <label class="md-header__button md-icon" title="浅色模式" for="__palette_0" hidden>
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
       </label>
     
@@ -189,16 +193,22 @@
       
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
   </nav>
   
-</header>
     
-    <div class="md-container" data-md-component="container">
       
-      
-        
-          
-            
 <nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
   <div class="md-grid">
     <ul class="md-tabs__list">
@@ -236,6 +246,8 @@
           
   
   
+    
+  
   开始使用
 
         </a>
@@ -252,11 +264,13 @@
     
     
       <li class="md-tabs__item">
-        <a href="../concepts/thread/" class="md-tabs__link">
+        <a href="../concepts/interrupt-callback/" class="md-tabs__link">
           
   
   
-  架构的一些concepts
+    
+  
+  理解 PnX
 
         </a>
       </li>
@@ -275,6 +289,8 @@
         <a href="../api/" class="md-tabs__link">
           
   
+  
+    
   
   API Reference
 
@@ -296,6 +312,8 @@
           
   
   
+    
+  
   维护资料
 
         </a>
@@ -307,7 +325,13 @@
     </ul>
   </div>
 </nav>
-          
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
         
       
       <main class="md-main" data-md-component="main">
@@ -334,6 +358,18 @@
     </a>
     PnX Documentation
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -374,14 +410,24 @@
   
     
     
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
+    
       
         
         
       
-      
-        
       
     
     
@@ -603,6 +649,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../thread/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    创建线程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../startup/" class="md-nav__link">
         
   
@@ -639,11 +713,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -661,7 +737,7 @@
   <span class="md-ellipsis">
     
   
-    架构的一些concepts
+    理解 PnX
   
 
     
@@ -677,39 +753,11 @@
             <span class="md-nav__icon md-icon"></span>
             
   
-    架构的一些concepts
+    理解 PnX
   
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../concepts/thread/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    线程
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -754,11 +802,23 @@
   
     
     
-    
-    
-      
       
         
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -769,8 +829,9 @@
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="../api/" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -784,8 +845,14 @@
   
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
@@ -799,32 +866,6 @@
           <ul class="md-nav__list" data-md-scrollfix>
             
               
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    总览
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -834,11 +875,33 @@
   
     
     
-    
-    
-      
       
         
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -1202,11 +1265,17 @@
   
     
     
-    
-    
-      
       
         
+      
+        
+      
+        
+      
+    
+    
+    
+      
       
     
     
@@ -1346,11 +1415,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1434,11 +1505,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1529,11 +1602,13 @@
   
     
     
-    
-    
-      
       
         
+      
+    
+    
+    
+      
       
     
     
@@ -1689,39 +1764,100 @@
           
             <div class="md-content" data-md-component="content">
               
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href=".." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    首页
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../project-structure/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    开始使用
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
               <article class="md-content__inner md-typeset">
                 
                   
 
 
+  
+    <a href="https://github.com/HKUSTGZ-ROBOMASTER-PNX/pnx_template/edit/main/docs/configuration.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
 
 <h1 id="configuration">Configuration</h1>
-<p>配置顺序：通过STM32CubeMX进行必要配置，在工程中选择开发板(目前只有stm32h7)，进行外设等硬件配置，添加工程的设备树</p>
+<p>pnx_template中已经写好了大部分常用的 .json 配置，
+<strong>更具体的功能见<a href="../configuration-reference/">配置参考</a>。</strong></p>
+<p>配置顺序：
+1. STM32CubeMX
+2. boards/ 选择开发板 #TODO: 目前只支持喵板
+3. config/ 硬件配置与设备树
+- 不要修改生成的<code>generated.hpp</code></p>
 <h2 id="boardboardioc"><code>board/board.ioc</code>：工程文件</h2>
-<p>使用 STM32CubeMX 修改。这里决定 MCU、引脚、时钟、DMA、中断和外设工作模式；CAN 的接收 FIFO0 / FIFO1 也只在这里配置。JSON 不记录 FIFO 选择。</p>
+<p>使用 STM32CubeMX 修改</p>
 <h2 id="boardsh723_v1"><code>boards/h723_v1/</code></h2>
-<p>当前选中的profile 会通过 <code>boards/h723_v1/board.json</code> 为工程配置开发板的固定配置，大部分情况下不会修改：
-例如 BMI088 使用的 SPI、CS 与 DRDY 引脚，以及 CAN 的 TDC 参数。
-这些配置对于同一块开发板（mc02或C板）通用，特殊情况下可以配合<code>.ioc</code>进行修改：例如需要的引脚太多，需修改常用配置才能满足开发需求。需要保证<code>.ioc</code> 与具体配置保持一致。</p>
+<p>当前选中的profile会通过 <code>boards/h723_v1/board.json</code> 为工程配置开发板的<strong>固定配置</strong>，<strong>大部分情况下不会修改</strong>：
+例如 BMI088 使用的 SPI、CS 与 DRDY 引脚。
+这些配置对于同一块开发板（mc02或C板）通用，特殊情况下可以配合<code>.ioc</code>进行修改：例如需要的引脚被占用，需修改常用配置才能满足开发需求。</p>
 <h2 id="configsparamsjson"><code>configs/params.json</code>：绑定外设与构建选择</h2>
-<p>这里放置和MCU外设相关的配置与构建功能选择：是否构建 USBX、遥控器和裁判系统使用哪一路 UART、遥控器类型、CAN 诊断、服务线程优先级，以及 AHRS、USB 等运行参数。</p>
-<p>例如，使用 DR16 时，UART 必须已经在 <code>board.ioc</code> 中存在并配置 RX DMA；然后在 <code>params.json</code> 选择它：</p>
+<p>这里放置和<strong>MCU外设相关的配置与构建功能选择</strong>：是否需要USB、遥控器类型、使用哪个串口、遥控器类型、AHRS等service线程优先级和运行参数。</p>
+<p>例如，使用 DR16 时需要的配置：</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"bindings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">"remoter_uart"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uart5"</span><span class="p">,</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">"uart_ports"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"host_link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uart7"</span><span class="w"> </span><span class="p">},</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">"spi_buses"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"custom_sensor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spi2"</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">"uart_ports"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"host_link"</span><span class="p">:</span><span class="w"> </span><span class="s2">"uart7"</span><span class="w"> </span><span class="p">},</span><span class="w"> </span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">"spi_buses"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"custom_sensor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spi6"</span><span class="w"> </span><span class="p">}</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">},</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="nt">"remoter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dr16"</span><span class="w"> </span><span class="p">}</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">}</span>
 </code></pre></div>
-<p><code>bindings.spi_buses</code> 为应用自定义 SPI 总线取角色名。上例生成
-<code>app::spi::custom_sensor</code>；<code>spi2</code> 必须已经在 <code>board.ioc</code> 中启用，配置生成会检查。
-BMI088、LED 等板载设备仍使用 <code>board::device::&lt;设备&gt;::spi</code>，不需要重复绑定。</p>
-<p><code>bindings.uart_ports</code> 同样为应用串口取角色名，例如上例生成
-<code>app::uart::host_link</code>。应用代码应使用这个角色名，不直接写具体 UART 实例。</p>
+<p><code>bindings.spi_buses</code> 为应用<strong>自定义SPI取名</strong>。上例生成
+<code>app::spi::custom_sensor</code>，在上层应用中不应出现spi6具体spi实例</p>
+<p><code>bindings.uart_ports</code> 同样为<strong>自定义串口取名</strong>，上例生成
+<code>app::uart::host_link</code>，在上层应用中不应出现uart7具体串口实例</p>
 <h2 id="configsrobotjson"><code>configs/robot.json</code>：机器人设备</h2>
-<p>这里描述当前机器人连接的"device"层设备：例如每台电机的具体配置，可选 DMIMU 的连接参数。</p>
+<p>描述当前机器人连接的"device"层设备：例如每台电机的具体配置、DMIMU</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"devices"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">"motors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
@@ -1738,58 +1874,37 @@ BMI088、LED 等板载设备仍使用 <code>board::device::&lt;设备&gt;::spi</
 <a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="p">}</span>
 <a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="p">}</span>
 </code></pre></div>
-<p>这里的 <code>can_bus</code> 和 <code>can_type</code> 必须与 <code>board.ioc</code> 中的实际 CAN 配置一致。配置阶段会检查不匹配的情况。</p>
-<p>更多分组、字段出口和可复制的配置片段见<a href="../configuration-reference/">配置参考</a>。</p>
+<p><strong>更多配置片段见<a href="../configuration-reference/">配置参考</a>。</strong></p>
 <h1 id="_1">生成结果和生效步骤</h1>
-<p>顶层 <code>CMakeLists.txt</code> 在 <strong>CMake configure</strong> 阶段运行 <code>configs/cmake/generate_config.cmake</code>。它读取：</p>
-<ul>
-<li>当前板卡 profile 指向的 <code>board/board.ioc</code>；</li>
-<li><code>boards/h723_v1/board.json</code>；</li>
-<li><code>configs/params.json</code>；</li>
-<li><code>configs/robot.json</code>。</li>
-</ul>
-<p>随后生成这些文件：</p>
+<p>顶层 <code>CMakeLists.txt</code> 在 <strong>CMake configure</strong> 阶段运行 <code>configs/cmake/generate_config.cmake</code>。它会读取以上配置文件并生成：</p>
 <table>
 <thead>
 <tr>
 <th>文件</th>
 <th>内容</th>
-<th>能否手改</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>configs/generated/config.hpp</code></td>
 <td>外设枚举、板级绑定、功能开关和 <code>params::</code> 常量</td>
-<td>否</td>
 </tr>
 <tr>
 <td><code>configs/generated/robot_config.hpp</code></td>
 <td>当前电机和 DMIMU 的 C++ 配置常量</td>
-<td>否</td>
 </tr>
 <tr>
 <td><code>configs/generated/bsp_bindings.cpp</code></td>
 <td>从 IOC 得到的 ADC、PWM 与 HAL 句柄绑定</td>
-<td>否</td>
 </tr>
 </tbody>
 </table>
-<p>修改 <code>params.json</code>、<code>robot.json</code>、<code>board.json</code> 或 CMake 配置后需要重新执行：</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">cmake</span> <span class="p">-</span><span class="n">-preset</span> <span class="n">Debug</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">cmake</span> <span class="p">-</span><span class="n">-build</span> <span class="p">-</span><span class="n">-preset</span> <span class="n">Debug</span>
-</code></pre></div>
-<p>修改 <code>board.ioc</code> 时，先在 CubeMX 中生成板级代码，再执行同样的 CMake configure 和 build。只改 <code>.ioc</code> 而不重新生成 CubeMX 代码，会让配置描述与实际编译的 HAL 初始化代码不一致。</p>
-<h1 id="_2">当前实现的注意事项</h1>
-<p>配置只能生成常量或编译进驱动，具体任务需要在上层逻辑中初始化并调用，例如：</p>
+<h1 id="_2">注意事项</h1>
+<p>配置只能<strong>生成常量</strong>或<strong>编译进驱动</strong>，具体任务需要在上层逻辑中<strong>初始化</strong>并<strong>调用</strong>，例如：</p>
 <ul>
-<li>
-<p><code>devices.motors.list</code> 中的每台电机都会生成配置并决定要编译哪些电机协议，电机仍然需要进行register等初始化行为</p>
-</li>
-<li>
-<p>TODO：<code>test.thread_priority</code> 和 <code>test.auto_run_on_boot</code> 当前会生成到 <code>config.hpp</code>，但仓库内没有运行代码读取它们；修改这两个字段目前不会改变运行行为。</p>
-</li>
+<li><code>devices.motors.list</code> 中的每台电机都会生成配置并决定要编译哪些电机协议，电机仍然需要进行register等初始化行为</li>
 </ul>
+<h1 id="todotestthread_priority-testauto_run_on_boot-confighpp">TODO：<code>test.thread_priority</code> 和 <code>test.auto_run_on_boot</code> 当前会生成到 <code>config.hpp</code>，但仓库内没有运行代码读取它们；修改这两个字段目前不会改变运行行为。</h1>
 <h1 id="_3">快速查找</h1>
 <table>
 <thead>
@@ -1800,16 +1915,8 @@ BMI088、LED 等板载设备仍使用 <code>board::device::&lt;设备&gt;::spi</
 </thead>
 <tbody>
 <tr>
-<td>MCU 型号、引脚、时钟、DMA、中断或外设模式</td>
-<td><code>board/board.ioc</code>，然后用 CubeMX 生成代码</td>
-</tr>
-<tr>
-<td>板载 BMI088、LED 的固定连接，或板卡 CAN 的 TDC 参数</td>
+<td>板载 BMI088、LED 的固定连接</td>
 <td>当前板卡 profile 的 <code>boards/h723_v1/board.json</code>，并确认与 IOC 一致</td>
-</tr>
-<tr>
-<td>CAN 的接收 FIFO0 / FIFO1</td>
-<td><code>board/board.ioc</code>。为每个 FDCAN 只启用一个接收 FIFO，再用 CubeMX 生成代码；不修改 JSON</td>
 </tr>
 <tr>
 <td>是否构建 USBX、遥控器类型与 UART、服务运行参数</td>
@@ -1818,10 +1925,6 @@ BMI088、LED 等板载设备仍使用 <code>board::device::&lt;设备&gt;::spi</
 <tr>
 <td>电机型号、CAN 总线、CAN ID、初始模式</td>
 <td><code>configs/robot.json</code> 的 <code>devices.motors</code></td>
-</tr>
-<tr>
-<td>DMIMU 是否存在及其 CAN 连接</td>
-<td><code>configs/robot.json</code> 的 <code>devices.dmimu</code></td>
 </tr>
 <tr>
 <td>查看生成后的 C++ 名称和当前结果</td>
@@ -1884,7 +1987,7 @@ BMI088、LED 等板载设备仍使用 <code>board::device::&lt;设备&gt;::spi</
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.path", "navigation.top", "navigation.indexes", "content.action.edit", "toc.follow", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
