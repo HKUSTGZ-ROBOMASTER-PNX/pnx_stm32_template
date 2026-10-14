@@ -1,4 +1,4 @@
-#include "app_threadx.h"
+#include "tx_api.h"
 #include "main.h"
 #include "crc.h"
 #include "dma.h"

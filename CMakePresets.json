@@ -1,0 +1,26 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+        },
+        {
+            "name": "h723_mc02",
+            "inherits": "base",
+            "cacheVariables": { "BOARD": "h723_mc02" }
+        },
+        {
+            "name": "f407_cboard",
+            "inherits": "base",
+            "cacheVariables": { "BOARD": "f407_cboard" }
+        }
+    ],
+    "buildPresets": [
+        { "name": "h723_mc02", "configurePreset": "h723_mc02" },
+        { "name": "f407_cboard", "configurePreset": "f407_cboard" }
+    ]
+}

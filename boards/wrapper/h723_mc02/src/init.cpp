@@ -1,4 +1,4 @@
-#include "app_threadx.h"
+#include "tx_api.h"
 #include "main.h"
 #include "adc.h"
 #include "crc.h"
@@ -12,7 +12,6 @@
 
 extern "C" void SystemClock_Config(void);
 extern "C" void PeriphCommonClock_Config(void);
-
 
 int main(void)
 {

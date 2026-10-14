@@ -21,6 +21,7 @@ target_link_options(${CMAKE_PROJECT_NAME} PRIVATE "LINKER:-T,${BOARD_LINKER_SCRI
 set_property(TARGET ${CMAKE_PROJECT_NAME} APPEND PROPERTY LINK_DEPENDS "${BOARD_LINKER_SCRIPT}")
 message(STATUS "Linker script: ${BOARD_LINKER_SCRIPT}")
 
-add_subdirectory("cubemx/${BOARD}")
+# Use CubeMX's generated source lists, not its standalone project entry point.
+add_subdirectory("cubemx/${BOARD}/cmake/stm32cubemx")
 add_subdirectory(dsp)
 add_subdirectory(wrapper)

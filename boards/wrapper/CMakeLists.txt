@@ -7,7 +7,9 @@ endif()
 
 add_library(board INTERFACE)
 target_compile_features(board INTERFACE cxx_std_17)
-target_include_directories(board INTERFACE "${_wrapper_dir}/include")
+target_include_directories(board INTERFACE
+    "${_wrapper_dir}/include"
+)
 target_link_libraries(board INTERFACE stm32cubemx)
 
 file(GLOB _wrapper_headers CONFIGURE_DEPENDS "${_wrapper_dir}/include/*.hpp")
