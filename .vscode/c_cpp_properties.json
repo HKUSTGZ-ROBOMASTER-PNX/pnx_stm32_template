@@ -1,11 +1,95 @@
 {
+    "env": {
+        "commonIncludes": [
+            "${workspaceFolder}/boards/dsp/include",
+            "${workspaceFolder}/libs/**",
+            "${workspaceFolder}/bsp/**",
+            "${workspaceFolder}/devices/**"
+        ]
+    },
     "configurations": [
         {
-            "name": "CMake databases",
-            "compileCommands": [
-                "${workspaceFolder}/build/h723_mc02/compile_commands.json",
-                "${workspaceFolder}/build/f407_cboard/compile_commands.json"
-            ]
+            "name": "h723_mc02",
+            "compilerPath": "arm-none-eabi-g++",
+            "compilerArgs": [
+                "-mcpu=cortex-m7",
+                "-mfpu=fpv5-d16",
+                "-mfloat-abi=hard"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "includePath": [
+                "${workspaceFolder}/boards/wrapper/h723_mc02/include",
+                "${commonIncludes}",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Core/Inc",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/AZURE_RTOS/App",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/USBX/App",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/USBX/Target",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Drivers/STM32H7xx_HAL_Driver/Inc",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Drivers/CMSIS/Device/ST/STM32H7xx/Include",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Drivers/CMSIS/Include",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Middlewares/ST/usbx/common/core/inc",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Middlewares/ST/usbx/ports/generic/inc",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Middlewares/ST/usbx/common/usbx_stm32_device_controllers",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Middlewares/ST/usbx/common/usbx_device_classes/inc",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Middlewares/ST/threadx/common/inc",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Middlewares/ST/threadx/ports/cortex_m7/gnu/inc",
+                "${workspaceFolder}/boards/cubemx/h723_mc02/Middlewares/ST/ARM/DSP/Inc"
+            ],
+            "defines": [
+                "USE_PWR_LDO_SUPPLY",
+                "TX_INCLUDE_USER_DEFINE_FILE",
+                "UX_INCLUDE_USER_DEFINE_FILE",
+                "USE_HAL_DRIVER",
+                "STM32H723xx",
+                "DEBUG"
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "c++17",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false
+            }
+        },
+        {
+            "name": "f407_cboard",
+            "compilerPath": "arm-none-eabi-g++",
+            "compilerArgs": [
+                "-mcpu=cortex-m4",
+                "-mfpu=fpv4-sp-d16",
+                "-mfloat-abi=hard"
+            ],
+            "intelliSenseMode": "gcc-arm",
+            "includePath": [
+                "${workspaceFolder}/boards/wrapper/f407_cboard/include",
+                "${commonIncludes}",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Core/Inc",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/AZURE_RTOS/App",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/USBX/App",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/USBX/Target",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Drivers/STM32F4xx_HAL_Driver/Inc",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Drivers/CMSIS/Device/ST/STM32F4xx/Include",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Drivers/CMSIS/Include",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Middlewares/ST/ARM/DSP/Inc",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Middlewares/ST/usbx/common/core/inc",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Middlewares/ST/usbx/ports/generic/inc",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Middlewares/ST/usbx/common/usbx_stm32_device_controllers",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Middlewares/ST/usbx/common/usbx_device_classes/inc",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Middlewares/ST/threadx/common/inc",
+                "${workspaceFolder}/boards/cubemx/f407_cboard/Middlewares/ST/threadx/ports/cortex_m4/gnu/inc"
+            ],
+            "defines": [
+                "TX_INCLUDE_USER_DEFINE_FILE",
+                "UX_INCLUDE_USER_DEFINE_FILE",
+                "USE_HAL_DRIVER",
+                "STM32F407xx",
+                "DEBUG"
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "c++17",
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false
+            }
         }
     ],
     "version": 4
