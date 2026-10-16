@@ -4,10 +4,12 @@
 #include "config.hpp"
 #include "ui.hpp"
 #include "ps2.hpp"
+#include "dmimu.hpp"
 
 namespace user_config
 {
 #if defined(STM32H723xx)
+inline constexpr bsp::can::config dmimu_can{bsp::can::handle::fdcan1, bsp::can::id_type::standard};
 inline constexpr auto ui_uart = bsp::peripherals::usart1;
 inline constexpr auto dr16_uart = bsp::peripherals::uart5;
 inline constexpr auto vt03_uart = bsp::peripherals::uart7;
@@ -18,6 +20,7 @@ inline constexpr bsp::gpio::config ps2_cs{bsp::peripherals::ps2_cs.instance,
     bsp::peripherals::ps2_cs.pin, bsp::active_level::low};
 inline constexpr auto ps2_spi = bsp::spi::handle::none;
 #elif defined(STM32F407xx)
+inline constexpr bsp::can::config dmimu_can{bsp::can::handle::can1, bsp::can::id_type::standard};
 inline constexpr auto ui_uart = bsp::peripherals::usart1;
 inline constexpr auto dr16_uart = bsp::peripherals::usart3;
 inline constexpr auto vt03_uart = bsp::peripherals::usart6;
@@ -31,6 +34,8 @@ inline constexpr auto ps2_spi = bsp::spi::handle::none;
 #endif
 
 inline constexpr ui::config ui{ui_uart.instance, 100};
+inline constexpr imu::dmimu::config dmimu{dmimu_can.instance, 1, 17,
+    imu::dmimu::mode::active, 20, 100};
 inline constexpr bsp::usart::line_config dr16_line{100000, bsp::usart::word_length::bits_9,
     bsp::usart::stop_bits::one, bsp::usart::parity::even, false, true};
 inline constexpr bsp::usart::line_config vt03_line{115200, bsp::usart::word_length::bits_8,

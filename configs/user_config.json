@@ -18,7 +18,8 @@
             "ps2_data": "ps2_data",
             "ps2_clk": "ps2_clk",
             "ps2_cs": "ps2_cs",
-            "ps2_spi": "none"
+            "ps2_spi": "none",
+            "dmimu_can": "fdcan1"
         },
         "f407_cboard": {
             "ui_uart": "usart1",
@@ -28,7 +29,15 @@
             "ps2_data": "none",
             "ps2_clk": "none",
             "ps2_cs": "none",
-            "ps2_spi": "none"
+            "ps2_spi": "none",
+            "dmimu_can": "can1"
         }
+    },
+    "dmimu": {
+        "can_id": 1,
+        "master_id": 17,
+        "mode": "active",
+        "assembly_timeout_ms": 20,
+        "offline_timeout_ms": 100
     }
 }

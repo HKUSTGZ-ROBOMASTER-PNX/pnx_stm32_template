@@ -1,6 +1,7 @@
 #include "dm_motor.hpp"
 #include "constants.hpp"
 #include "constrains.hpp"
+#include "quantize.hpp"
 #include <cmath>
 #include <cstring>
 
@@ -13,11 +14,6 @@ uint16_t quant(float v, float lo, float hi, unsigned bits)
 {
     const float range = float((1u << bits) - 1u);
     return static_cast<uint16_t>((math::clamp(v, lo, hi) - lo) * range / (hi - lo));
-}
-
-float dequant(uint16_t v, float lo, float hi, unsigned bits)
-{
-    return float(v) * (hi - lo) / float((1u << bits) - 1u) + lo;
 }
 
 void put_float(uint8_t* dst, float v)
@@ -123,13 +119,13 @@ bool motor::receive(const uint8_t data[8]) noexcept
     const uint16_t p = (uint16_t(data[1]) << 8) | data[2];
     const uint16_t v = (uint16_t(data[3]) << 4) | (data[4] >> 4);
     const uint16_t t = (uint16_t(data[4] & 15) << 8) | data[5];
-    fdb.position = dequant(p, -pmax, pmax, 16);
+    fdb.position = math::dequantize(p, -pmax, pmax, 16);
     if (config_.wrap_position)
     {
         fdb.position = math::wrap(fdb.position, -math::pi, math::pi);
     }
-    fdb.velocity = dequant(v, -vmax, vmax, 12) * config_.feedback_velocity_scale;
-    fdb.torque = dequant(t, -tmax, tmax, 12);
+    fdb.velocity = math::dequantize(v, -vmax, vmax, 12) * config_.feedback_velocity_scale;
+    fdb.torque = math::dequantize(t, -tmax, tmax, 12);
     mos_temperature_ = data[6];
     rotor_temperature_ = data[7];
     fdb.temperature = mos_temperature_;

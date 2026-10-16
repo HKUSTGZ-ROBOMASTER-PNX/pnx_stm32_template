@@ -20,6 +20,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE libs)
 | `math/include/constants.hpp` | 数学常量、角度转换、平方根倒数 |
 | `math/include/constrains.hpp` | 限幅、`wrap(input, min, max)` 周期回绕、绝对值限幅 |
 | `math/include/geometry.hpp` | 三维向量、四元数运算与欧拉角转换 |
+| `math/include/quantize.hpp` | `dequantize(value, min, max, bits)` 协议整数反量化；调用方保证位宽 1～31、数值在范围内且有限的 `min < max` |
 | `filters/include/biquad.hpp` | 二阶滤波状态及 Butterworth 高通 |
 | `filters/include/iir.hpp` | 二阶 IIR 低通滤波器 |
 | `filters/include/kalman_1d.hpp` | 当前为空，尚未实现 |

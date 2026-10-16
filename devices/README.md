@@ -1,6 +1,6 @@
 # 设备使用指南
 
-本目录提供 BMI088、LED、DJI/DM/LK 电机、DR16/VT03/PS2 遥控器及裁判系统 UI。
+本目录提供 BMI088、DMIMU、LED、DJI/DM/LK 电机、DR16/VT03/PS2 遥控器及裁判系统 UI。
 应用负责初始化顺序、调用周期、收发调度和错误处理，设备不会自动创建任务。
 
 ## 接入工程
@@ -28,6 +28,8 @@ target_link_libraries(my_app PRIVATE app_config)
 | `boards.<板名>.ps2_spi` | 可选 PS2 硬件 SPI |
 | `ui.timeout_ms` | UI 发送超时，毫秒 |
 | `ps2` | GPIO 时序、SPI 超时及摇杆死区 |
+| `boards.<板名>.dmimu_can` | DMIMU CAN 资源，默认 H723 FDCAN1 / F407 CAN1 |
+| `dmimu` | 设备/反馈 ID、工作模式、组装窗口和掉线超时（毫秒） |
 
 资源名称引用对应板卡 `config.hpp` 中已有的资源，`none` 表示未配置。
 新增引脚需先配置 CubeMX，再在板级配置中导出资源。板载 BMI088 和 LED 接线随选板切换，
@@ -78,6 +80,65 @@ pnxtypes::status read_imu(math::vector3& accel, math::vector3& gyro)
 
 初始化、校准、读取和温控由同一线程独占执行，SPI 总线也不能同时由其他任务访问。
 驱动没有后台线程或任务停滞时的自动温控看门狗，偏置应按实际传感器校准。
+
+## DMIMU
+
+DMIMU 直接提供传感器数据和内部解算的姿态，不再经过软件 AHRS。
+在 JSON 中选择 CAN、`can_id`（命令目标）、`master_id`（反馈 ID），并设置 `mode` 为
+`active` 或 `request`。默认组装窗口 20 ms、掉线超时 100 ms，须按设备发送周期调整。
+设备必须输出加速度、角速度、欧拉角和四元数四类帧才能形成完整结果。
+
+```cpp
+#include "user_config.hpp"
+
+imu::dmimu attitude_sensor;
+
+pnxtypes::status configure_dmimu()
+{
+    return attitude_sensor.configure(user_config::dmimu);
+}
+
+// 应用线程从接收队列取出帧后调用，received_ms 为中断接收时刻。
+pnxtypes::status process_dmimu(bsp::can::handle bus, const bsp::can::rx_frame& frame,
+    uint32_t received_ms)
+{
+    return attitude_sensor.receive(bus, frame, received_ms);
+}
+
+bool read_attitude(imu::dmimu::sample& sample, uint32_t now_ms)
+{
+    return attitude_sensor.take_sample(sample, now_ms);
+}
+```
+
+`configure()` 只配置本地解析器，不初始化 CAN、不发送命令、不改设备持久参数。
+应用先注册 CAN 回调，再调用 `bsp::can::init(user_config::dmimu_can)`；共享总线只初始化一次。
+使用经典 CAN 标准数据帧，即使硬件是 FDCAN，也不要为 DMIMU 选择 FD 帧模式。
+回调只把帧和接收时间复制到应用队列，线程按接收顺序调用 `receive()`。
+队列溢出后在线程中调用 `clear()`，丢弃旧队列数据，再恢复组装。
+停止接收或销毁回调对象前，按 BSP 要求停止总线并解除注册；不要销毁仍被中断使用的对象。
+
+所有时间参数使用同一单调毫秒时钟，不直接传入非 1 kHz 的 ThreadX tick。
+四类帧收齐后 `take_sample()` 返回一次最新结果，多组未取数据会覆盖旧结果。
+超时、重复分量会重新开始组装；无新结果或结果已过期时返回 false，输出参数不变。
+`online(now_ms)` 只依据完整结果的新鲜度，命令应答和零散数据不会使设备上线。
+调用 `clear()` 后结果立即无效，软件序号继续递增；默认构造的四元数不代表已经收到有效姿态。
+
+`sample` 的加速度为 m/s²、角速度和欧拉角为 rad/s 与 rad，四元数使用 WXYZ 顺序。
+数据保留设备坐标及旋转约定，不自动归一化四元数或补偿安装方向。替换 BMI088 + 软件 AHRS
+时须先对齐坐标系、四元数方向和安装变换。`received_ms` 是组内最早帧的接收时刻，
+`sequence` 是本地发布计数；协议没有采样序号，组装窗口只能限制时间跨度，不能保证严格同步。
+
+主动模式由设备自行发送。请求模式由应用依次调用
+`read_register(imu::dmimu::register_id::accel_data/gyro_data/euler_data/quaternion_data)`，
+分别发送四条请求，保留各条请求的进度；发送返回 `busy` 时稍后重试该条，不能每次从头重发。
+选择 `request` 只描述应用工作方式，不自动切换设备模式。切换可显式调用
+`write_register(register_id::change_active, 0)`（请求）或传 `1`（主动）。
+其余校准、清零、保存等命令使用 `register_id` 中对应项，通过 `read_register/write_register` 发送。
+
+命令返回值仅表示 CAN 提交结果。用 `take_reply(reply)` 获取设备应答，检查寄存器和 ACK，
+应用负责等待超时及命令串行化。应答槽只保留最近一条；协议没有事务序号，超时后的迟到应答
+不能作为新命令成功的可靠依据。修改设备 ID、重启或恢复设置后清空接收队列，并重新配置本地实例。
 
 ## LED
 
