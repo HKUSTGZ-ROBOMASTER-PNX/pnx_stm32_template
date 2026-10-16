@@ -23,6 +23,44 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE libs)
 | `filters/include/biquad.hpp` | 二阶滤波状态及 Butterworth 高通 |
 | `filters/include/iir.hpp` | 二阶 IIR 低通滤波器 |
 | `filters/include/kalman_1d.hpp` | 当前为空，尚未实现 |
+| `pid/include/pid.hpp` | 位置式 PID、外部微分输入及可组合的积分/微分选项 |
+
+## pid
+
+```cpp
+#include "pid.hpp"
+
+control::pid controller(1.0f, 0.01f, 0.1f, 100.0f, 20.0f,
+                        control::pid_mode::position |
+                        control::pid_mode::trapezoid_integral);
+
+float step(float reference, float feedback)
+{
+    controller.ref = reference;
+    controller.fdb = feedback;
+    controller.update();
+    return controller.result;
+}
+```
+
+实现全部位于头文件，链接 `libs` 即可使用，无需添加 PID 源文件。
+固定周期调用 `update()`；`ki` 已包含采样周期，`kd` 已包含采样周期的倒数。
+输入和参数须为有限值，`max_out`、`max_iout`、`scalar_a`、`scalar_b` 须非负。
+同一实例的读写由调用方串行化。
+
+基础模式选择 `position` 或 `delta` 之一，再用 `|` 组合选项。
+`delta` 沿用外部微分输入语义：`d = kd * update(velocity)`，并非增量式 PID。
+调用方负责速度的单位、符号及采样周期换算；若使用反馈速度实现微分先行，通常传入负值。
+`derivative_on_measurement` 会覆盖基础模式的微分项，使用 `kd * (上次反馈 - 当前反馈)`。
+
+积分选项保留原算法顺序：梯形积分、积分分离、变速积分、积分限幅。
+积分分离沿用 `max_out` 作为误差阈值；分离和变速仅在误差与已有积分同号时生效。
+变速积分在 `scalar_b` 内完整积分，随后在宽度 `scalar_a` 内线性降为零；
+`scalar_a = 0` 时直接切换，不执行除法。输出和积分始终分别受两个限幅参数约束。
+
+`tune()` 修改增益并保留状态。`clear()` 清零输入和运行状态，保留增益、模式及限幅/变速参数。
+`reset_state(reference, feedback)` 清零累计输出并用给定输入初始化历史，
+避免相同输入下下一次更新出现由空历史导致的差分微分突跳。
 
 ## callback
 
