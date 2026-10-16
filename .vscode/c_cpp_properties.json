@@ -1,6 +1,7 @@
 {
     "env": {
         "commonIncludes": [
+            "${workspaceFolder}/configs/include",
             "${workspaceFolder}/boards/dsp/include",
             "${workspaceFolder}/libs/**",
             "${workspaceFolder}/bsp/**",

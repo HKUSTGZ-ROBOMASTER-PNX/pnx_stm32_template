@@ -2,6 +2,17 @@
 
 基于 CMake 和 ARM GNU Toolchain 的嵌入式工程，支持 `h723_mc02` 和 `f407_cboard`。
 
+板载 BMI088、LED 和固定 GPIO 接线随选板切换；应用串口选择集中在
+[`configs/user_config.json`](configs/user_config.json)，生成结果为 `configs/include/user_config.hpp`。UI 当前以 USART1 为示例，
+请按实际接线修改。配置头不初始化设备，调用方式见 [devices 文档](devices/README.md#应用资源选择)。
+
+配置仅使用一个 JSON、一个 `configs/scripts/generate_config.cmake` 和一个生成头文件。
+CMake 配置阶段自动生成头文件，构建时会检测 JSON 修改并重新生成。只更新编辑器配置头、
+不编译固件时运行 `cmake -P configs/scripts/generate_config.cmake`。
+生成头文件随仓库提交，初次打开无需构建；不要直接编辑它。
+JSON 的 `boards` 保存两块板的资源选择，`ui` 和 `ps2` 保存可调参数；资源名称引用各板
+`config.hpp` 已有定义，`none` 表示未连接。串口协议格式由生成脚本固定，不属于接线选择。
+
 ## 开发环境
 
 安装以下工具，并将其可执行文件所在目录加入本机 `PATH`：
