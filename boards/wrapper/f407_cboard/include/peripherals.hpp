@@ -9,35 +9,6 @@
 // f407_cboard.ioc. These values describe CubeMX configuration; they do not init HAL.
 namespace bsp::peripherals
 {
-// DMA flags are {rx, tx}; SPI1_IRQn is not enabled in the IOC.
-inline constexpr spi::config spi1{spi::handle::spi1, {true, true}, false};
-inline constexpr usart::config usart1{usart::handle::usart1, {true, true}};
-inline constexpr usart::config usart2{usart::handle::usart2, {true, true}};
-inline constexpr usart::config usart3{usart::handle::usart3, {true, false}};
-inline constexpr usart::config usart6{usart::handle::usart6, {true, true}};
-
-// Timer kernel clocks before prescaling, not PWM output frequencies.
-// APB2: RCC.APB2TimFreq_Value; APB1: RCC.APB1TimFreq_Value.
-inline constexpr pwm::config tim1{168000000U, pwm::handle::tim1, 0x0FU};   // CH1/2/3/4
-inline constexpr pwm::config tim4{84000000U, pwm::handle::tim4, 0x04U};    // CH3
-inline constexpr pwm::config tim8{168000000U, pwm::handle::tim8, 0x07U};   // CH1/2/3
-inline constexpr pwm::config tim10{168000000U, pwm::handle::tim10, 0x01U}; // CH1
-
-// GPIO locations only. Initial levels do not determine logical active levels;
-// active retains the type default (high) and must be chosen by the consumer.
-inline constexpr gpio::config pa4{gpio::port::a, 4};
-inline constexpr gpio::config pb0{gpio::port::b, 0};
-inline constexpr gpio::config pc5{gpio::port::c, 5}; // EXTI5
-inline constexpr gpio::config pc8{gpio::port::c, 8};
-inline constexpr gpio::config pg6{gpio::port::g, 6};
-inline constexpr gpio::config ph10{gpio::port::h, 10};
-inline constexpr gpio::config ph11{gpio::port::h, 11};
-inline constexpr gpio::config ph12{gpio::port::h, 12};
-
-inline constexpr spi::config spi_configs[]{spi1};
-inline constexpr usart::config usart_configs[]{usart1, usart2, usart3, usart6};
-inline constexpr pwm::config pwm_configs[]{tim1, tim4, tim8, tim10};
-
 [[nodiscard]] inline constexpr SPI_HandleTypeDef* spi_handle(spi::handle id) noexcept
 {
     switch (id)

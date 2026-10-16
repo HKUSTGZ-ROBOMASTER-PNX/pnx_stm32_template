@@ -37,8 +37,8 @@ set(BOARD "h723_mc02" CACHE STRING "Target board")
 
 | 文件 | 接口与职责 |
 | --- | --- |
-| `config.hpp` | 其他外设的配置结构体和枚举，不依赖 HAL 头文件。CAN 配置由 BSP 定义。 |
-| `peripherals.hpp` | `bsp::peripherals` 下其他外设的配置常量和 HAL 资源查询。 |
+| `config.hpp` | 外设类型、`bsp::peripherals` 资源常量和 `board` 板载器件接线，不依赖 HAL/BSP 实现。CAN 配置由 BSP 定义。 |
+| `peripherals.hpp` | `bsp::peripherals` 下的 HAL 资源查询，包含 `config.hpp`。 |
 | `memory.hpp` | `memory::buffer<N>`、`memory::valid()`、`memory::cache_line_size` 和 `RAM_D1_BSS`，用于声明及检查 DMA 缓冲区。 |
 | `../src/init.cpp` | 提供 `main()`，完成 HAL、时钟及 CubeMX 外设初始化，然后调用 `tx_kernel_enter()`；H723 还启用 I/D-cache。 |
 
@@ -89,10 +89,48 @@ ThreadX 和 USBX 的应用入口由 BSP 替代，具体源文件选择见 [BSP �
 | 串口 | `uart5`、`usart10`：DMA 开/关；`uart7`、`usart1`：DMA 开/开 | `usart3`：DMA 开/关；`usart1`、`usart2`、`usart6`：DMA 开/开 |
 | PWM | `tim3`：260 MHz、CH4；`tim12`：260 MHz、CH2 | `tim1`：168 MHz、CH1～4；`tim4`：84 MHz、CH3；`tim8`：168 MHz、CH1～3；`tim10`：168 MHz、CH1 |
 | ADC | `adc1`：通道 4、rank 1、1.5 cycles | 未提供 ADC 接口 |
-| GPIO | `ps2_cs`、`ps2_clk`、`ps2_data`、`ps2_cmd`、`acc_cs`、`gyro_cs`、`acc_int`、`gyro_int`、`pc13`、`pc14`、`pc15` | `pa4`、`pb0`、`pc5`、`pc8`、`pg6`、`ph10`、`ph11`、`ph12` |
+| 通用 GPIO | `ps2_cs`、`ps2_clk`、`ps2_data`、`ps2_cmd`、`pc13`、`pc14`、`pc15` | `pc8`、`pg6` |
 
-GPIO 的 `active` 需由设备使用者按电路选择，CubeMX 初始输出电平不代表逻辑有效电平。
+未命名用途的 GPIO 的 `active` 需按电路选择，CubeMX 初始输出电平不代表逻辑有效电平。
 CAN 的经典/FD 模式、标识符类型和 TDC 由 BSP 配置；CAN 时序及 FIFO 大小仍由 CubeMX 生成代码维护。
+
+### 板载器件接线
+
+接线统一放在各板的 `config.hpp`，使用 `board::bmi088`、`board::led`。
+设备驱动通过参数接收接线，配置不承担初始化或读写。
+接线依据参考仓库 `penix/configs/boards/{h723_dmmc02,f407_cboard}/board.json`，
+并与当前 IOC 核对；不依赖该参考仓库进行构建。
+
+| 接口 | H723 MC02 | F407 C 板 |
+| --- | --- | --- |
+| `board::bmi088::spi` | SPI2 | SPI1 |
+| `board::bmi088::acc_cs` | PC0，低有效 | PA4，低有效 |
+| `board::bmi088::gyro_cs` | PC3，低有效 | PB0，低有效 |
+| `board::bmi088::acc_drdy` | PE10，高有效 | 未导出：PC4 未在 IOC 配置 |
+| `board::bmi088::gyro_drdy` | PE12，高有效 | PC5，高有效 |
+| `board::bmi088::heater_timer` / `heater_channel` | TIM3 / CH4 | TIM10 / CH1 |
+| `board::led::spi` | SPI6，WS2812 数据输出 | 不提供 |
+| `board::led::red/green/blue` | 不提供 | PH12/PH11/PH10，高有效 |
+
+H723 的 DRDY 使用上升沿 EXTI。C 板参考接线为高有效 DRDY，但当前 IOC 配置 PC5
+下降沿 EXTI；启用中断采样前需要统一传感器中断极性与 IOC 触发沿，再重新生成。
+这里仅描述接线，不修改生成代码或默认为中断采样已经可用。
+两种 LED 的控制方式不同，驱动应按板卡选择实现，不把 WS2812 当作三路 GPIO。
+
+原来的 H723 `bsp::peripherals::acc_cs/gyro_cs/acc_int/gyro_int` 和 C 板
+`pa4/pb0/pc5/ph10/ph11/ph12` 已由上述器件名称替代，避免重复维护接线。
+
+C 板在 GPIO 初始化完成后点亮红灯：
+
+```cpp
+#include "config.hpp"
+#include "bsp_gpio.hpp"
+
+void show_error()
+{
+    (void)bsp::gpio::set_active(board::led::red, true);
+}
+```
 
 ### HAL 资源查询
 

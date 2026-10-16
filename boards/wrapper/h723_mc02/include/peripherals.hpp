@@ -10,39 +10,6 @@
 // h723_mc02.ioc. These values describe CubeMX configuration; they do not init HAL.
 namespace bsp::peripherals
 {
-// DMA flags are {rx, tx}; irq is the SPI peripheral NVIC enable.
-inline constexpr spi::config spi2{spi::handle::spi2, {true, true}, true};
-inline constexpr spi::config spi6{spi::handle::spi6, {false, false}, false};
-inline constexpr usart::config uart5{usart::handle::uart5, {true, false}};
-inline constexpr usart::config uart7{usart::handle::uart7, {true, true}};
-inline constexpr usart::config usart1{usart::handle::usart1, {true, true}};
-inline constexpr usart::config usart10{usart::handle::usart10, {true, false}};
-
-inline constexpr adc::config adc1{4, 1, adc::sampling_time::cycles_1_5, adc::handle::adc1};
-
-// Timer kernel clocks before prescaling, not PWM output frequencies.
-// APB1 timers: RCC.Tim2OutputFreq_Value=260000000.
-inline constexpr pwm::config tim3{260000000U, pwm::handle::tim3, 0x08U};   // CH4
-inline constexpr pwm::config tim12{260000000U, pwm::handle::tim12, 0x02U}; // CH2
-
-// GPIO locations only. The IOC gives initial levels, not logical active levels;
-// active retains the type default (high) and must be chosen by the consumer.
-inline constexpr gpio::config ps2_cs{gpio::port::a, 0};
-inline constexpr gpio::config ps2_clk{gpio::port::a, 2};
-inline constexpr gpio::config acc_cs{gpio::port::c, 0};
-inline constexpr gpio::config gyro_cs{gpio::port::c, 3};
-inline constexpr gpio::config pc13{gpio::port::c, 13};
-inline constexpr gpio::config pc14{gpio::port::c, 14};
-inline constexpr gpio::config pc15{gpio::port::c, 15};
-inline constexpr gpio::config ps2_data{gpio::port::e, 9};
-inline constexpr gpio::config acc_int{gpio::port::e, 10};
-inline constexpr gpio::config gyro_int{gpio::port::e, 12};
-inline constexpr gpio::config ps2_cmd{gpio::port::e, 13};
-
-inline constexpr spi::config spi_configs[]{spi2, spi6};
-inline constexpr usart::config usart_configs[]{uart5, uart7, usart1, usart10};
-inline constexpr pwm::config pwm_configs[]{tim3, tim12};
-
 [[nodiscard]] inline constexpr SPI_HandleTypeDef* spi_handle(spi::handle id) noexcept
 {
     switch (id)
