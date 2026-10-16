@@ -18,7 +18,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE libs)
 | `msg/include/msg.hpp` | 基于 ThreadX mutex 的最新值发布订阅 |
 | `crc/include/crc.hpp` | CRC8、CRC16、Modbus CRC16 的计算、校验和追加 |
 | `math/include/constants.hpp` | 数学常量、角度转换、平方根倒数 |
-| `math/include/constrains.hpp` | 限幅、循环限幅、绝对值限幅 |
+| `math/include/constrains.hpp` | 限幅、`wrap(input, min, max)` 周期回绕、绝对值限幅 |
 | `math/include/geometry.hpp` | 三维向量、四元数运算与欧拉角转换 |
 | `filters/include/biquad.hpp` | 二阶滤波状态及 Butterworth 高通 |
 | `filters/include/iir.hpp` | 二阶 IIR 低通滤波器 |
@@ -129,3 +129,7 @@ void example()
 可用 `available()` 查询是否有新值，但 `read()` 的返回状态才是最终结果。
 锁被占用或没有待读消息时返回 `busy`，不阻塞等待；这些接口不用于 ISR。
 销毁 topic 前需显式 `deinit()`，重新初始化后应重新订阅。
+
+`math::wrap(input, min, max)` 使用原循环限幅实现，将输入回绕到半开区间 `[min, max)`。
+例如弧度使用 `wrap(angle, -math::pi, math::pi)`，角度使用 `wrap(angle, -180.0f, 180.0f)`。
+上下界相等时返回该边界，上界小于下界时返回原输入。

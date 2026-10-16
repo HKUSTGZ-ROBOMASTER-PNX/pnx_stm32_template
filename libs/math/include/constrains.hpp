@@ -22,7 +22,7 @@ inline float clamp(float input, float min_value, float max_value)
     return input;
 }
 
-inline float clamp_loop(float input, float min_value, float max_value)
+inline float wrap(float input, float min_value, float max_value)
 {
     if (max_value < min_value)
     {
