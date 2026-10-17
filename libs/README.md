@@ -63,6 +63,12 @@ float step(float reference, float feedback)
 `reset_state(reference, feedback)` 清零累计输出并用给定输入初始化历史，
 避免相同输入下下一次更新出现由空历史导致的差分微分突跳。
 
+## geometry
+
+`math::multiply(quaternion, quaternion)` computes the Hamilton product in W, X, Y, Z order.
+The existing `math::multiply(quaternion, vector3)` treats the vector as a pure quaternion;
+it does not rotate the vector.
+
 ## callback
 
 ```cpp
