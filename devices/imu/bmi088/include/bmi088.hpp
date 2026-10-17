@@ -57,7 +57,19 @@ public:
 
     ~bmi088() = default;
     pnxtypes::status configure();
-    pnxtypes::status calibrate();
+
+    struct calibration
+    {
+        uint16_t count = 0;
+        pnxtypes::status result = pnxtypes::status::busy;
+        math::vector3 mean{}, m2{};
+        float accel_mean = 0.0f, accel_m2 = 0.0f;
+    };
+
+    // Feed fresh read_gyro/read_acc results once per sampling cycle, before additional mounting/centripetal
+    // compensation. No I/O or delay. busy = collecting, ok/error = terminal until progress = {}.
+    // Keep gyro_offset unchanged while collecting; only successful completion replaces it.
+    pnxtypes::status calibrate(calibration& progress, math::vector3 gyro, math::vector3 accel);
     // Explicitly stop heating before stopping the owner thread or destroying this object.
     pnxtypes::status shutdown();
     pnxtypes::status read_acc(math::vector3* data);
@@ -66,8 +78,6 @@ public:
 
     pnxtypes::status verify_acc_chip_id();
     pnxtypes::status verify_gyro_chip_id();
-    pnxtypes::status verify_acc_data();
-    pnxtypes::status verify_gyro_data();
 
     // temp is a fresh read_temperature() result in Celsius; call at a fixed 125 ms period.
     // A temperature read failure stops heating. No automatic watchdog if the owner stalls.
@@ -145,6 +155,7 @@ private:
     static constexpr float accel_preoffset_y = 0.00647039594993548f;
     static constexpr float accel_preoffset_z = 0.014968990490337293f;
 
+    // len counts payload bytes; the accelerometer SPI dummy byte is discarded internally.
     pnxtypes::status read_reg(cs target, uint8_t addr, uint8_t* data, uint8_t len);
     pnxtypes::status write_reg(cs target, uint8_t addr, const uint8_t* data, uint8_t len);
 };

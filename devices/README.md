@@ -71,7 +71,34 @@ pnxtypes::status read_imu(math::vector3& accel, math::vector3& gyro)
 ```
 
 加速度单位为 m/s²，角速度为 rad/s，温度为 °C。读数写入调用方变量；上述两次读取不是
-原子采样，陀螺仪读取失败时加速度可能已更新。需要静止校准时调用 `calibrate()`。
+原子采样，陀螺仪读取失败时加速度可能已更新。
+
+`configure()` 自动初始化 DWT，寄存器配置及复位等待使用 DWT 忙等。
+校准采用逐次累计，函数本身不读硬件、不延时，也不关闭加热：
+
+```cpp
+imu::bmi088::calibration progress{};
+// 每个采样周期读取成功后调用一次，输入为 read_gyro/read_acc 的结果。
+auto result = imu_device.calibrate(progress, gyro, accel);
+```
+
+`busy` 表示继续累计，`ok` 表示收满 4000 次有效样本并更新零偏，`error` 表示运动或
+统计量不符合静止条件。完成或失败后结果保持不变，令 `progress = {}` 开始下一次校准；
+重新配置设备或采集失败后也应丢弃未完成的累计。失败不会修改原零偏。
+累计期间不要更改 `gyro_offset`，输入不得再做安装方向或向心补偿；函数会还原原始角速度
+以估计完整零偏。调用方负责采样节奏，不能重复提交同一次读取的数据。
+使用现有 AHRS 时每个采样周期累计一次，并照常温控、发布进度和休眠。
+
+初始化与 SPI 读取参考 Bosch BMI08x SensorAPI v1.9.0 的
+[`bmi08a.c`](https://github.com/boschsensortec/BMI08x_SensorAPI/blob/master/bmi08a.c)、
+[`bmi08g.c`](https://github.com/boschsensortec/BMI08x_SensorAPI/blob/master/bmi08g.c) 和
+[`bmi08_defs.h`](https://github.com/boschsensortec/BMI08x_SensorAPI/blob/master/bmi08_defs.h)：
+加速度计先 dummy read 再检查 ID，软复位等待 1 ms 后重新 dummy read；陀螺仪复位等待
+30 ms。加速度计两次电源配置各等待 5 ms，测量配置等待 40 ms；陀螺仪测量配置等待
+10 ms，电源配置等待 30 ms。普通测量寄存器写入另留 2 µs 间隔。
+底层读取统一丢弃加速度计的 SPI dummy byte，调用方长度只计有效数据；配置寄存器按掩码
+修改并读回校验。仍保留原有上电等待 10 ms、轮询模式、量程、输出单位和温控策略，
+没有引入官方驱动的 FIFO、同步采样或配置固件上传功能。
 
 启用温控前按实际硬件设置 `thermal` 和 `temperature_pid`，默认参数对应 H723，
 切到 F407 不会自动适配温控参数。应用每 125 ms 调用 `read_temperature(&temp)`，
