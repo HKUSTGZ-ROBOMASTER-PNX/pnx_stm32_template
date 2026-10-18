@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.22)
 
-add_library(dsp STATIC
+add_library(dsp STATIC EXCLUDE_FROM_ALL
     src/BasicMathFunctions/arm_dot_prod_f32.c
     src/MatrixFunctions/arm_mat_add_f32.c
     src/MatrixFunctions/arm_mat_init_f32.c
