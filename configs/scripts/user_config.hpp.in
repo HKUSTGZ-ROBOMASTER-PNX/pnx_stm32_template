@@ -6,7 +6,6 @@
 #include "ps2.hpp"
 #include "dmimu.hpp"
 #include "bmi088.hpp"
-#include "bmi088_heater.hpp"
 #include "referee.hpp"
 
 namespace user_config
