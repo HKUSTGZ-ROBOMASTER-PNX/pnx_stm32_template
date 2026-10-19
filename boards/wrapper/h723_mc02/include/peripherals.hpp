@@ -10,6 +10,9 @@
 // h723_mc02.ioc. These values describe CubeMX configuration; they do not init HAL.
 namespace bsp::peripherals
 {
+inline constexpr auto heater_timeout_timer = &htim6;
+inline constexpr uint32_t heater_timeout_clock_hz = 260000000U;
+
 [[nodiscard]] inline constexpr SPI_HandleTypeDef* spi_handle(spi::handle id) noexcept
 {
     switch (id)
