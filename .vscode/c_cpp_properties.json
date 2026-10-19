@@ -5,7 +5,8 @@
             "${workspaceFolder}/boards/dsp/include",
             "${workspaceFolder}/libs/**",
             "${workspaceFolder}/bsp/**",
-            "${workspaceFolder}/devices/**"
+            "${workspaceFolder}/devices/**",
+            "${workspaceFolder}/modules/**"
         ]
     },
     "configurations": [
