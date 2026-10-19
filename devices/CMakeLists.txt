@@ -18,7 +18,7 @@ file(GLOB _device_sources CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/*/src/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*/*/src/*.cpp"
 )
-# Exactly one board LED backend; all other device implementations compile on both boards.
+# Select one board-specific LED backend.
 list(REMOVE_ITEM _device_sources
     "${CMAKE_CURRENT_SOURCE_DIR}/led/src/ws2812.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/led/src/gpio.cpp"
