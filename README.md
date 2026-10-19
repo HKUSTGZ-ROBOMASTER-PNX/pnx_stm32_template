@@ -23,7 +23,18 @@
 [`configs/user_config.json`](configs/user_config.json)，生成结果为 `configs/include/user_config.hpp`。UI 当前以 USART1 为示例，
 请按实际接线修改。配置头不初始化设备，调用方式见 [devices 文档](devices/README.md#应用资源选择)。
 
-配置仅使用一个 JSON、一个 `configs/scripts/generate_config.cmake` 和一个生成头文件。
+配置入口为 `configs/scripts/generate_config.cmake`，输入保持一个 JSON，输出保持一个头文件。
+入口组织公共校验、通信参数、IMU 参数和板级资源选择，C++ 输出布局由独立模板描述：
+
+| `configs/scripts/` 文件 | 职责 |
+| --- | --- |
+| `values.cmake` | 数值、布尔值和三维向量校验 |
+| `communication.cmake` | UI、PS2、遥控与裁判接收参数 |
+| `imu.cmake` | DMIMU、AHRS、ESKF 和温控参数 |
+| `boards.cmake` | 板级资源、启用选择和资源冲突检查 |
+| `user_config.hpp.in` | 生成头文件模板 |
+
+添加配置项时，在对应参数文件中读取并校验，在模板中声明 C++ 字段。
 CMake 配置阶段自动生成头文件，构建时会检测 JSON 修改并重新生成。只更新编辑器配置头、
 不编译固件时运行 `cmake -P configs/scripts/generate_config.cmake`。
 生成头文件随仓库提交，初次打开无需构建；不要直接编辑它。
