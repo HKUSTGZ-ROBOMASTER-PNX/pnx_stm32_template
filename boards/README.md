@@ -85,11 +85,11 @@ ThreadX 和 USBX 的应用入口由 BSP 替代，具体源文件选择见 [BSP �
 | 资源 | `h723_mc02` | `f407_cboard` |
 | --- | --- | --- |
 | CAN | `fdcan1`：FD+BRS；`fdcan2`、`fdcan3`：classic | `can1`、`can2`：classic |
-| SPI | `spi2`：DMA 开/开，IRQ 开；`spi6`：DMA 关/关，IRQ 关 | `spi1`：DMA 开/开，IRQ 关 |
+| SPI | `spi1`：DMA 关/关，IRQ 开；`spi2`：DMA 开/开，IRQ 开；`spi6`：DMA 关/关，IRQ 关 | `spi1`：DMA 开/开，IRQ 关 |
 | 串口 | `uart5`、`usart10`：DMA 开/关；`uart7`、`usart1`：DMA 开/开 | `usart3`：DMA 开/关；`usart1`、`usart2`、`usart6`：DMA 开/开 |
 | PWM | `tim3`：260 MHz、CH4；`tim12`：260 MHz、CH2 | `tim1`：168 MHz、CH1～4；`tim4`：84 MHz、CH3；`tim8`：168 MHz、CH1～3；`tim10`：168 MHz、CH1 |
 | ADC | `adc1`：通道 4、rank 1、1.5 cycles | 未提供 ADC 接口 |
-| 通用 GPIO | `ps2_cs`、`ps2_clk`、`ps2_data`、`ps2_cmd`、`pc13`、`pc14`、`pc15` | `pc8`、`pg6` |
+| 通用 GPIO | `ps2_cs`、`pc13`、`pc14`、`pc15` | `pc8`、`pg6` |
 
 未命名用途的 GPIO 的 `active` 需按电路选择，CubeMX 初始输出电平不代表逻辑有效电平。
 CAN 的经典/FD 模式、标识符类型和 TDC 由 BSP 配置；CAN 时序及 FIFO 大小仍由 CubeMX 生成代码维护。

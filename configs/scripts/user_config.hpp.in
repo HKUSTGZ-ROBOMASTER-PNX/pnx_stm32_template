@@ -83,7 +83,6 @@ inline constexpr bsp::usart::line_config dr16_line{100000, bsp::usart::word_leng
     bsp::usart::stop_bits::one, bsp::usart::parity::even, false, true};
 inline constexpr bsp::usart::line_config vt03_line{115200, bsp::usart::word_length::bits_8,
     bsp::usart::stop_bits::one, bsp::usart::parity::none, false, true};
-inline constexpr remotes::ps2::gpio_timing ps2_timing{@_half_period@, @_cs_setup@, @_cs_hold@};
 inline constexpr float ps2_deadzone = @_deadzone@f;
 inline constexpr uint32_t ps2_spi_timeout_ms = @_spi_timeout@;
 } // namespace user_config

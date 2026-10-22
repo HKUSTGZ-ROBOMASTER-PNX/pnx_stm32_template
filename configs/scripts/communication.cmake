@@ -1,8 +1,5 @@
-# UI 与 PS2 的发送超时、时序和输入死区。
+# UI 与 PS2 的发送超时和输入死区。
 config_integer(_ui_timeout 0 2147483647 ui timeout_ms)
-config_integer(_half_period 1 1000000 ps2 half_period_us)
-config_integer(_cs_setup 0 1000000 ps2 cs_setup_us)
-config_integer(_cs_hold 0 1000000 ps2 cs_hold_us)
 config_number(_deadzone 0 1 ps2 deadzone)
 if(_deadzone GREATER_EQUAL 1)
     message(FATAL_ERROR "ps2.deadzone must be less than 1")

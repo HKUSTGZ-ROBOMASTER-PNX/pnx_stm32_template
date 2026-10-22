@@ -23,10 +23,10 @@ target_link_libraries(my_app PRIVATE devices)
 | --- | --- |
 | `boards.<板名>.ui_uart` | UI 串口 |
 | `boards.<板名>.dr16_uart / vt03_uart` | 遥控器串口 |
-| `boards.<板名>.ps2_cmd / ps2_data / ps2_clk / ps2_cs` | PS2 GPIO 资源 |
-| `boards.<板名>.ps2_spi` | 可选 PS2 硬件 SPI |
+| `boards.<板名>.ps2_cs` | PS2 低有效 GPIO 片选 |
+| `boards.<板名>.ps2_spi` | PS2 硬件 SPI，启用 PS2 时必需 |
 | `ui.timeout_ms` | UI 发送超时，毫秒 |
-| `ps2` | GPIO 时序、SPI 超时及摇杆死区 |
+| `ps2` | SPI 超时及摇杆死区 |
 
 资源名称引用对应板卡 `config.hpp` 中已有的资源，`none` 表示未配置。
 新增引脚需先配置 CubeMX，再在板级配置中导出资源。板载 LED 接线随选板切换，
@@ -155,32 +155,17 @@ RX 回调在中断中执行，向线程传递时先复制数据。一次 idle �
 
 ### PS2
 
-H723 默认使用 CMD PE13、DATA PE9、CLK PA2、CS PA0（低有效），F407 默认未配置。
-使用前在 CubeMX 配置 CMD/CLK/CS 为输出、DATA 为输入，再在 JSON 选择资源。
+H723 使用 SPI1：CMD PD7、DATA PB4、CLK PB3、CS PE15（低有效）；F407 默认未配置。
 
 ```cpp
-#include "user_config.hpp"
-
-remotes::ps2::gpio gamepad{user_config::ps2_cmd, user_config::ps2_data,
-    user_config::ps2_clk, user_config::ps2_cs, user_config::ps2_timing};
-
-pnxtypes::status init_gamepad()
-{
-    return gamepad.init();
-}
-
-pnxtypes::status read_gamepad(remotes::ps2::sample& sample)
-{
-    remotes::ps2::frame raw;
-    return remotes::ps2::poll(gamepad, sample, raw, user_config::ps2_deadzone);
-}
+static uint8_t tx[remotes::ps2::frame_size]{};
+static uint8_t rx[remotes::ps2::frame_size]{};
+remotes::ps2::spi gamepad{user_config::ps2_spi, user_config::ps2_cs, tx, rx};
 ```
 
-初始化成功后在线程中周期读取，`sample` 提供按键位图和归一化摇杆值。
-手柄须支持模拟模式，驱动不自动切换模式。硬件 SPI 可将传输对象替换为
-`remotes::ps2::spi{user_config::ps2_spi, user_config::ps2_cs, user_config::ps2_spi_timeout_ms}`，
-使用同样的 `init/poll` 接口。两板默认均未配置该 SPI，使用前设置为低位先行、时钟空闲高、
-第二边沿采样，并满足手柄时序，不能直接复用 BMI088 或 WS2812 的现有总线配置。
+调用 `init()` 后，用 `start()` 发起 IT 收发；`read(raw)` 返回 `ok` 后调用 `decode()`。
+`busy` 时让出 CPU 等待；超时调用 `cancel()` 并检查结果，缓冲区保留到完成或成功取消。
+SPI 使用模式 3、LSB first 和中断；H723 字节间隔为 10 个 SCK 周期，手柄使用模拟模式。
 
 ## 裁判系统 UI
 

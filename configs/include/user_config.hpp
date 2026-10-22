@@ -15,7 +15,6 @@ namespace user_config
 #define USER_REMOTER_DR16 1
 #define USER_REMOTER_VT03 1
 #define USER_REMOTER_PS2 1
-#define USER_REMOTER_PS2_SPI 0
 inline constexpr char ahrs_device[] = "bmi088";
 inline constexpr bool bmi088_heater_enabled = true;
 inline constexpr imu::bmi088_thermal bmi088_thermal{45.0f, 0.059999999999999998f,
@@ -28,18 +27,14 @@ inline constexpr bool remoter_ps2_enabled = true;
 inline constexpr auto ui_uart = bsp::peripherals::usart1;
 inline constexpr auto dr16_uart = bsp::peripherals::uart5;
 inline constexpr auto vt03_uart = bsp::peripherals::uart7;
-inline constexpr auto ps2_cmd = bsp::peripherals::ps2_cmd;
-inline constexpr auto ps2_data = bsp::peripherals::ps2_data;
-inline constexpr auto ps2_clk = bsp::peripherals::ps2_clk;
 inline constexpr bsp::gpio::config ps2_cs{(bsp::peripherals::ps2_cs).instance,
     (bsp::peripherals::ps2_cs).pin, bsp::active_level::low};
-inline constexpr auto ps2_spi = bsp::spi::handle::none;
+inline constexpr auto ps2_spi = bsp::spi::handle::spi1;
 #elif defined(STM32F407xx)
 #define USER_AHRS_DEVICE 1
 #define USER_REMOTER_DR16 1
 #define USER_REMOTER_VT03 1
 #define USER_REMOTER_PS2 0
-#define USER_REMOTER_PS2_SPI 0
 inline constexpr char ahrs_device[] = "bmi088";
 inline constexpr bool bmi088_heater_enabled = false;
 inline constexpr imu::bmi088_thermal bmi088_thermal{45.0f, 0.059999999999999998f,
@@ -52,9 +47,6 @@ inline constexpr bool remoter_ps2_enabled = false;
 inline constexpr auto ui_uart = bsp::peripherals::usart1;
 inline constexpr auto dr16_uart = bsp::peripherals::usart3;
 inline constexpr auto vt03_uart = bsp::peripherals::usart6;
-inline constexpr auto ps2_cmd = bsp::gpio::config{};
-inline constexpr auto ps2_data = bsp::gpio::config{};
-inline constexpr auto ps2_clk = bsp::gpio::config{};
 inline constexpr bsp::gpio::config ps2_cs{(bsp::gpio::config{}).instance,
     (bsp::gpio::config{}).pin, bsp::active_level::low};
 inline constexpr auto ps2_spi = bsp::spi::handle::none;
@@ -131,7 +123,6 @@ inline constexpr bsp::usart::line_config dr16_line{100000, bsp::usart::word_leng
     bsp::usart::stop_bits::one, bsp::usart::parity::even, false, true};
 inline constexpr bsp::usart::line_config vt03_line{115200, bsp::usart::word_length::bits_8,
     bsp::usart::stop_bits::one, bsp::usart::parity::none, false, true};
-inline constexpr remotes::ps2::gpio_timing ps2_timing{5, 20, 20};
 inline constexpr float ps2_deadzone = 0.02f;
 inline constexpr uint32_t ps2_spi_timeout_ms = 20;
 } // namespace user_config

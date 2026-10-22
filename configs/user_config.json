@@ -3,9 +3,6 @@
         "timeout_ms": 100
     },
     "ps2": {
-        "half_period_us": 5,
-        "cs_setup_us": 20,
-        "cs_hold_us": 20,
         "deadzone": 0.02,
         "spi_timeout_ms": 20
     },
@@ -14,11 +11,8 @@
             "ui_uart": "usart1",
             "dr16_uart": "uart5",
             "vt03_uart": "uart7",
-            "ps2_cmd": "ps2_cmd",
-            "ps2_data": "ps2_data",
-            "ps2_clk": "ps2_clk",
             "ps2_cs": "ps2_cs",
-            "ps2_spi": "none",
+            "ps2_spi": "spi1",
             "dmimu_can": "fdcan1",
             "ahrs_device": "bmi088",
             "bmi088_thermal": {
@@ -39,9 +33,6 @@
             "ui_uart": "usart1",
             "dr16_uart": "usart3",
             "vt03_uart": "usart6",
-            "ps2_cmd": "none",
-            "ps2_data": "none",
-            "ps2_clk": "none",
             "ps2_cs": "none",
             "ps2_spi": "none",
             "dmimu_can": "can1",

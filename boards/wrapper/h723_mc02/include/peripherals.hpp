@@ -17,6 +17,8 @@ inline constexpr uint32_t heater_timeout_clock_hz = 260000000U;
 {
     switch (id)
     {
+        case spi::handle::spi1:
+            return &hspi1;
         case spi::handle::spi2:
             return &hspi2;
         case spi::handle::spi6:

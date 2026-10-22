@@ -1,5 +1,4 @@
 #include "ps2.hpp"
-#include "bsp_dwt.hpp"
 #include <cmath>
 
 namespace remotes::ps2
@@ -51,95 +50,90 @@ pnxtypes::status decode(const frame& raw, sample& out, float deadzone) noexcept
 
 pnxtypes::status spi::init()
 {
-    const pnxtypes::status status = bsp::spi::wait_ready(spi_bus_, timeout_ms_);
-    return status == pnxtypes::status::ok ? bsp::gpio::set_active(cs_, false) : status;
-}
-
-pnxtypes::status spi::transfer(const uint8_t* tx, uint8_t* rx, uint8_t size)
-{
-    if (tx == nullptr || rx == nullptr || size == 0U)
+    if (pending_)
+    {
+        return pnxtypes::status::busy;
+    }
+    if (&tx_ == &rx_)
     {
         return pnxtypes::status::invalid_arg;
     }
-    pnxtypes::status status = bsp::gpio::set_active(cs_, true);
-    if (status == pnxtypes::status::ok)
-    {
-        status = bsp::spi::transmit_receive(spi_bus_, tx, rx, size, timeout_ms_);
-    }
-    const pnxtypes::status release_status = bsp::gpio::set_active(cs_, false);
-    return status == pnxtypes::status::ok ? release_status : status;
+    return bsp::gpio::set_active(cs_, false);
 }
 
-pnxtypes::status gpio::init()
+pnxtypes::status spi::start()
 {
-    pnxtypes::status status = bsp::dwt::init();
-    if (status != pnxtypes::status::ok)
+    using pnxtypes::status;
+    if (pending_ || bsp::spi::state(spi_bus_).busy)
     {
-        return status;
+        return status::busy;
     }
-    status = bsp::gpio::set_active(cs_, false);
-    if (status == pnxtypes::status::ok)
+    constexpr uint8_t query[frame_size]{0x01U, 0x42U, 0x00U, 0x00U, 0x00U, 0x00U, 0x00U,
+        0x00U, 0x00U};
+    for (uint8_t i = 0; i < frame_size; ++i)
     {
-        status = bsp::gpio::write(clk_, true);
+        tx_[i] = query[i];
     }
-    return status == pnxtypes::status::ok ? bsp::gpio::write(cmd_, true) : status;
+    auto result = bsp::gpio::set_active(cs_, true);
+    if (result != status::ok)
+    {
+        return result;
+    }
+    pending_ = true;
+    result = bsp::spi::transmit_receive_it(spi_bus_, tx_, rx_, frame_size);
+    if (result != status::ok)
+    {
+        const auto stopped = cancel();
+        return stopped == status::ok ? result : stopped;
+    }
+    return status::ok;
 }
 
-pnxtypes::status gpio::transfer_byte(uint8_t tx, uint8_t& rx)
+pnxtypes::status spi::read(frame& raw)
 {
-    rx = 0U;
-    for (uint8_t bit = 0U; bit < 8U; ++bit)
+    using pnxtypes::status;
+    if (!pending_)
     {
-        pnxtypes::status status = bsp::gpio::write(cmd_, (tx & (1U << bit)) != 0U);
-        if (status != pnxtypes::status::ok)
-        {
-            return status;
-        }
-        bsp::dwt::delay_us(timing_.half_period_us);
-        status = bsp::gpio::write(clk_, false);
-        if (status != pnxtypes::status::ok)
-        {
-            return status;
-        }
-        bsp::dwt::delay_us(timing_.half_period_us);
-        bool data_high = false;
-        status = bsp::gpio::read(data_, data_high);
-        if (status != pnxtypes::status::ok)
-        {
-            return status;
-        }
-        if (data_high)
-        {
-            rx = static_cast<uint8_t>(rx | (1U << bit));
-        }
-        status = bsp::gpio::write(clk_, true);
-        if (status != pnxtypes::status::ok)
-        {
-            return status;
-        }
-        bsp::dwt::delay_us(timing_.half_period_us);
+        return status::not_initialized;
     }
-    return pnxtypes::status::ok;
+    const auto& transfer = bsp::spi::state(spi_bus_);
+    if (!transfer.complete)
+    {
+        return status::busy;
+    }
+    const auto result = transfer.last_status;
+    if (result != status::ok)
+    {
+        const auto stopped = cancel();
+        return stopped == status::ok ? result : stopped;
+    }
+    const auto released = bsp::gpio::set_active(cs_, false);
+    if (released != status::ok)
+    {
+        return released;
+    }
+    pending_ = false;
+    for (uint8_t i = 0; i < frame_size; ++i)
+    {
+        raw.bytes[i] = rx_[i];
+    }
+    return status::ok;
 }
 
-pnxtypes::status gpio::transfer(const uint8_t* tx, uint8_t* rx, uint8_t size)
+pnxtypes::status spi::cancel()
 {
-    if (tx == nullptr || rx == nullptr || size == 0U)
+    using pnxtypes::status;
+    if (!pending_)
     {
-        return pnxtypes::status::invalid_arg;
+        return status::ok;
     }
-    pnxtypes::status status = bsp::gpio::set_active(cs_, true);
-    if (status == pnxtypes::status::ok)
+    const auto stopped = bsp::spi::abort(spi_bus_);
+    const auto released = bsp::gpio::set_active(cs_, false);
+    if (stopped == status::ok && released == status::ok)
     {
-        bsp::dwt::delay_us(timing_.cs_setup_us);
-        for (uint8_t index = 0U; index < size && status == pnxtypes::status::ok; ++index)
-        {
-            status = transfer_byte(tx[index], rx[index]);
-        }
-        bsp::dwt::delay_us(timing_.cs_hold_us);
+        pending_ = false;
     }
-    const pnxtypes::status release_status = bsp::gpio::set_active(cs_, false);
-    return status == pnxtypes::status::ok ? release_status : status;
+    return stopped == status::ok ? released : stopped;
 }
 
 } // namespace remotes::ps2

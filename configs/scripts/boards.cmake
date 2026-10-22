@@ -65,9 +65,6 @@ foreach(_board IN ITEMS h723_mc02 f407_cboard)
     config_resource(_ui_uart usart ui_uart)
     config_resource(_dr16_uart usart dr16_uart)
     config_resource(_vt03_uart usart vt03_uart)
-    config_resource(_ps2_cmd gpio ps2_cmd)
-    config_resource(_ps2_data gpio ps2_data)
-    config_resource(_ps2_clk gpio ps2_clk)
     config_resource(_ps2_cs gpio ps2_cs)
     config_resource(_ps2_spi spi ps2_spi)
 
@@ -88,17 +85,9 @@ foreach(_board IN ITEMS h723_mc02 f407_cboard)
         if(_ps2_cs STREQUAL "bsp::gpio::config{}")
             message(FATAL_ERROR "PS2 requires CS")
         endif()
-        if(_ps2_spi STREQUAL "bsp::spi::handle::none" AND
-           (_ps2_cmd STREQUAL "bsp::gpio::config{}" OR
-            _ps2_data STREQUAL "bsp::gpio::config{}" OR
-            _ps2_clk STREQUAL "bsp::gpio::config{}"))
-            message(FATAL_ERROR "PS2 GPIO backend requires CMD/DATA/CLK")
+        if(_ps2_spi STREQUAL "bsp::spi::handle::none")
+            message(FATAL_ERROR "PS2 requires a hardware SPI")
         endif()
-    endif()
-    if(_ps2_spi STREQUAL "bsp::spi::handle::none")
-        set(_remote_ps2_spi 0)
-    else()
-        set(_remote_ps2_spi 1)
     endif()
     # Export the same validated choices to CMake for the selected board.
     if(_board STREQUAL BOARD)
@@ -113,7 +102,6 @@ foreach(_board IN ITEMS h723_mc02 f407_cboard)
 #define USER_REMOTER_DR16 @_remote_dr16@
 #define USER_REMOTER_VT03 @_remote_vt03@
 #define USER_REMOTER_PS2 @_remote_ps2@
-#define USER_REMOTER_PS2_SPI @_remote_ps2_spi@
 inline constexpr char ahrs_device[] = "@_ahrs_device@";
 inline constexpr bool bmi088_heater_enabled = @_heater_enabled@;
 inline constexpr imu::bmi088_thermal bmi088_thermal{@_thermal_target@, @_thermal_boost@,
@@ -126,9 +114,6 @@ inline constexpr bool remoter_ps2_enabled = @_enable_ps2@;
 inline constexpr auto ui_uart = @_ui_uart@;
 inline constexpr auto dr16_uart = @_dr16_uart@;
 inline constexpr auto vt03_uart = @_vt03_uart@;
-inline constexpr auto ps2_cmd = @_ps2_cmd@;
-inline constexpr auto ps2_data = @_ps2_data@;
-inline constexpr auto ps2_clk = @_ps2_clk@;
 inline constexpr bsp::gpio::config ps2_cs{(@_ps2_cs@).instance,
     (@_ps2_cs@).pin, bsp::active_level::low};
 inline constexpr auto ps2_spi = @_ps2_spi@;

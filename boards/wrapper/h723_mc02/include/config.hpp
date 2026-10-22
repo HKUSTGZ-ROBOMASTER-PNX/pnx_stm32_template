@@ -24,6 +24,7 @@ namespace spi
 enum class handle : uint8_t
 {
     none,
+    spi1,
     spi2,
     spi6
 };
@@ -135,6 +136,7 @@ struct config
 namespace bsp::peripherals
 {
 // DMA flags are {rx, tx}; irq is the SPI peripheral NVIC enable.
+inline constexpr spi::config spi1{spi::handle::spi1, {false, false}, true};
 inline constexpr spi::config spi2{spi::handle::spi2, {true, true}, true};
 inline constexpr spi::config spi6{spi::handle::spi6, {false, false}, false};
 inline constexpr usart::config uart5{usart::handle::uart5, {true, false}};
@@ -151,15 +153,12 @@ inline constexpr pwm::config tim12{260000000U, pwm::handle::tim12, 0x02U}; // CH
 
 // Unidentified GPIOs retain the default active level; initial output levels do not
 // establish device polarity. PC13/14/15 have no device labels in the IOC.
-inline constexpr gpio::config ps2_cs{gpio::port::a, 0};
-inline constexpr gpio::config ps2_clk{gpio::port::a, 2};
+inline constexpr gpio::config ps2_cs{gpio::port::e, 15, active_level::low};
 inline constexpr gpio::config pc13{gpio::port::c, 13};
 inline constexpr gpio::config pc14{gpio::port::c, 14};
 inline constexpr gpio::config pc15{gpio::port::c, 15};
-inline constexpr gpio::config ps2_data{gpio::port::e, 9};
-inline constexpr gpio::config ps2_cmd{gpio::port::e, 13};
 
-inline constexpr spi::config spi_configs[]{spi2, spi6};
+inline constexpr spi::config spi_configs[]{spi1, spi2, spi6};
 inline constexpr usart::config usart_configs[]{uart5, uart7, usart1, usart10};
 inline constexpr pwm::config pwm_configs[]{tim3, tim12};
 } // namespace bsp::peripherals
