@@ -21,7 +21,11 @@
                 "reboost": 0.05,
                 "approach_start": 0.044,
                 "approach_end": 0.029,
-                "hold_max": 0.04
+                "hold_max": 0.04,
+                "kp": 300.0,
+                "ki": 0.06,
+                "kd": 100.0,
+                "max_out": 90.0
             },
             "referee_uart": "usart1",
             "remoter_dr16_enabled": true,
@@ -43,7 +47,11 @@
                 "reboost": 0.05,
                 "approach_start": 0.044,
                 "approach_end": 0.029,
-                "hold_max": 0.04
+                "hold_max": 0.04,
+                "kp": 650.0,
+                "ki": 0.08,
+                "kd": 10.0,
+                "max_out": 900.0
             },
             "referee_uart": "usart1",
             "remoter_dr16_enabled": true,

@@ -18,7 +18,8 @@ namespace user_config
 inline constexpr char ahrs_device[] = "bmi088";
 inline constexpr bool bmi088_heater_enabled = true;
 inline constexpr imu::bmi088_thermal bmi088_thermal{45.0f, 0.059999999999999998f,
-    0.050000000000000003f, 0.043999999999999997f, 0.029000000000000001f, 0.040000000000000001f};
+    0.050000000000000003f, 0.043999999999999997f, 0.029000000000000001f, 0.040000000000000001f,
+    300.0f, 0.059999999999999998f, 100.0f, 90.0f};
 inline constexpr bsp::can::config dmimu_can{bsp::can::handle::fdcan1, bsp::can::id_type::standard};
 inline constexpr auto referee_uart = bsp::peripherals::usart1;
 inline constexpr bool remoter_dr16_enabled = true;
@@ -38,7 +39,8 @@ inline constexpr auto ps2_spi = bsp::spi::handle::spi1;
 inline constexpr char ahrs_device[] = "bmi088";
 inline constexpr bool bmi088_heater_enabled = false;
 inline constexpr imu::bmi088_thermal bmi088_thermal{45.0f, 0.059999999999999998f,
-    0.050000000000000003f, 0.043999999999999997f, 0.029000000000000001f, 0.040000000000000001f};
+    0.050000000000000003f, 0.043999999999999997f, 0.029000000000000001f, 0.040000000000000001f,
+    650.0f, 0.080000000000000002f, 10.0f, 900.0f};
 inline constexpr bsp::can::config dmimu_can{bsp::can::handle::can1, bsp::can::id_type::standard};
 inline constexpr auto referee_uart = bsp::peripherals::usart1;
 inline constexpr bool remoter_dr16_enabled = true;

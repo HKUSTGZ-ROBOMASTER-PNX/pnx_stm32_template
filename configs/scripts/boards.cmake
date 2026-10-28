@@ -53,6 +53,10 @@ foreach(_board IN ITEMS h723_mc02 f407_cboard)
     foreach(_duty IN ITEMS boost reboost approach_start approach_end hold_max)
         config_float(_thermal_${_duty} 0 1 boards ${_board} bmi088_thermal ${_duty})
     endforeach()
+    foreach(_gain IN ITEMS kp ki kd)
+        config_float(_thermal_${_gain} 0 10000 boards ${_board} bmi088_thermal ${_gain})
+    endforeach()
+    config_float(_thermal_max_out 0 999 boards ${_board} bmi088_thermal max_out)
     config_resource(_referee_uart usart referee_uart)
     foreach(_remote IN ITEMS dr16 vt03 ps2)
         config_bool(_enable_${_remote} boards ${_board} remoter_${_remote}_enabled)
@@ -105,7 +109,8 @@ foreach(_board IN ITEMS h723_mc02 f407_cboard)
 inline constexpr char ahrs_device[] = "@_ahrs_device@";
 inline constexpr bool bmi088_heater_enabled = @_heater_enabled@;
 inline constexpr imu::bmi088_thermal bmi088_thermal{@_thermal_target@, @_thermal_boost@,
-    @_thermal_reboost@, @_thermal_approach_start@, @_thermal_approach_end@, @_thermal_hold_max@};
+    @_thermal_reboost@, @_thermal_approach_start@, @_thermal_approach_end@, @_thermal_hold_max@,
+    @_thermal_kp@, @_thermal_ki@, @_thermal_kd@, @_thermal_max_out@};
 inline constexpr bsp::can::config dmimu_can{bsp::can::handle::@_dm_bus@, bsp::can::id_type::standard};
 inline constexpr auto referee_uart = @_referee_uart@;
 inline constexpr bool remoter_dr16_enabled = @_enable_dr16@;
