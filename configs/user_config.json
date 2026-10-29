@@ -31,10 +31,13 @@
             "remoter_dr16_enabled": true,
             "remoter_vt03_enabled": true,
             "remoter_ps2_enabled": true,
-            "bmi088_heater_enabled": true
+            "bmi088_heater_enabled": true,
+            "rfid_uart": "usart10",
+            "buzzer_timer": "tim12",
+            "buzzer_channel": 2
         },
         "f407_cboard": {
-            "ui_uart": "usart1",
+            "ui_uart": "none",
             "dr16_uart": "usart3",
             "vt03_uart": "usart6",
             "ps2_cs": "none",
@@ -53,11 +56,14 @@
                 "kd": 10.0,
                 "max_out": 900.0
             },
-            "referee_uart": "usart1",
+            "referee_uart": "none",
             "remoter_dr16_enabled": true,
             "remoter_vt03_enabled": true,
             "remoter_ps2_enabled": false,
-            "bmi088_heater_enabled": false
+            "bmi088_heater_enabled": false,
+            "rfid_uart": "usart1",
+            "buzzer_timer": "tim4",
+            "buzzer_channel": 3
         }
     },
     "dmimu": {
@@ -135,5 +141,19 @@
             0.0,
             0.0
         ]
+    },
+    "rfid": {
+        "address": 32,
+        "block": 4,
+        "baud": 9600,
+        "priority": 8,
+        "stack_size": 2048,
+        "startup_ms": 1000,
+        "poll_ms": 120,
+        "timeout_ms": 300,
+        "recovery_ms": 1000,
+        "buzzer_period_us": 333,
+        "buzzer_on_ms": 100,
+        "buzzer_gap_ms": 100
     }
 }
