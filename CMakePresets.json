@@ -2,61 +2,25 @@
     "version": 3,
     "configurePresets": [
         {
-            "name": "default",
+            "name": "base",
             "hidden": true,
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/build/${presetName}",
-		    "toolchainFile": "${sourceDir}/cmake/gcc-arm-none-eabi.cmake"
+            "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
         },
         {
-            "name": "h723-debug",
-            "inherits": "default",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "PNX_BOARD": "h723_mc02"
-            }
+            "name": "h723_mc02",
+            "inherits": "base",
+            "cacheVariables": { "BOARD": "h723_mc02" }
         },
         {
-            "name": "h723-release",
-            "inherits": "default",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "PNX_BOARD": "h723_mc02"
-            }
-        },
-        {
-            "name": "f407-debug",
-            "inherits": "default",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
-                "PNX_BOARD": "f407_c_board"
-            }
-        },
-        {
-            "name": "f407-release",
-            "inherits": "default",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "PNX_BOARD": "f407_c_board"
-            }
+            "name": "f407_cboard",
+            "inherits": "base",
+            "cacheVariables": { "BOARD": "f407_cboard" }
         }
     ],
     "buildPresets": [
-        {
-            "name": "h723-debug",
-            "configurePreset": "h723-debug"
-        },
-        {
-            "name": "h723-release",
-            "configurePreset": "h723-release"
-        },
-        {
-            "name": "f407-debug",
-            "configurePreset": "f407-debug"
-        },
-        {
-            "name": "f407-release",
-            "configurePreset": "f407-release"
-        }
+        { "name": "h723_mc02", "configurePreset": "h723_mc02" },
+        { "name": "f407_cboard", "configurePreset": "f407_cboard" }
     ]
 }

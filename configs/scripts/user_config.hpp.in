@@ -1,0 +1,88 @@
+#pragma once
+
+// Generated from configs/user_config.json. Do not edit.
+#include "config.hpp"
+#include "ui.hpp"
+#include "ps2.hpp"
+#include "dmimu.hpp"
+#include "bmi088.hpp"
+#include "referee.hpp"
+
+namespace user_config
+{
+@_boards@#else
+#error Unsupported board
+#endif
+
+inline constexpr imu::bmi088_heater_config bmi088_heater{
+    @_heater_period_ms@, @_heater_timeout_ms@,
+    @_heater_stable_time_ms@, @_heater_tolerance@, @_heater_priority@};
+inline constexpr ULONG bmi088_heater_stack_size = @_heater_stack@;
+
+inline constexpr imu::bmi088_config bmi088{board::bmi088::spi, board::bmi088::acc_cs,
+    board::bmi088::gyro_cs};
+namespace application
+{
+inline constexpr math::vector3 imu_offset{@_imu_offset@};
+} // namespace application
+
+namespace ahrs
+{
+inline constexpr uint32_t thread_priority = @_ahrs_priority@;
+inline constexpr ULONG bmi088_stack_size = @_ahrs_bmi088_stack@;
+inline constexpr ULONG dmimu_stack_size = @_ahrs_dmimu_stack@;
+inline constexpr ULONG sample_period_ticks = @_ahrs_period@;
+inline constexpr float max_dt = @_ahrs_max_dt@;
+inline constexpr uint32_t retry_period_ms = @_ahrs_retry@;
+inline constexpr uint32_t warmup_timeout_ms = @_ahrs_warmup@;
+inline constexpr bool calibrate_on_start = @_ahrs_calibrate@;
+inline constexpr ULONG dmimu_wait_ticks = @_ahrs_wait@;
+inline constexpr uint32_t dmimu_request_period_ms = @_ahrs_request@;
+inline constexpr uint32_t dmimu_queue_frames = @_ahrs_queue@;
+namespace eskf
+{
+inline constexpr float gyro_noise = @_eskf_gyro_noise@;
+inline constexpr float gyro_bias_walk = @_eskf_gyro_bias_walk@;
+inline constexpr float accel_noise = @_eskf_accel_noise@;
+inline constexpr float accel_magnitude_gain = @_eskf_accel_magnitude_gain@;
+inline constexpr float nis_gate = @_eskf_nis_gate@;
+inline constexpr float reject_timeout = @_eskf_reject_timeout@;
+inline constexpr float impact_jerk = @_eskf_impact_jerk@;
+inline constexpr float impact_hold = @_eskf_impact_hold@;
+inline constexpr float static_accel_tolerance = @_eskf_static_accel_tolerance@;
+inline constexpr float static_gyro_tolerance = @_eskf_static_gyro_tolerance@;
+inline constexpr float static_filter_time_constant = @_eskf_static_filter_time_constant@;
+inline constexpr float zero_rate_min_time = @_eskf_zero_rate_min_time@;
+inline constexpr float initial_tilt_stddev = @_eskf_initial_tilt_stddev@;
+inline constexpr float initial_yaw_stddev = @_eskf_initial_yaw_stddev@;
+inline constexpr float initial_bias_stddev = @_eskf_initial_bias_stddev@;
+inline constexpr float min_bias_stddev = @_eskf_min_bias_stddev@;
+} // namespace eskf
+} // namespace ahrs
+
+inline constexpr math::vector3 bmi088_gyro_offset{@_gyro_offset@};
+inline constexpr math::vector3 bmi088_accel_offset{@_accel_offset@};
+
+inline constexpr ::referee::config referee{
+    referee_uart, @_referee_priority@, @_referee_period@, @_referee_offline@};
+inline constexpr ULONG referee_stack_size = @_referee_stack@;
+namespace remoter
+{
+inline constexpr uint32_t thread_priority = @_remoter_priority@;
+inline constexpr ULONG stack_size = @_remoter_stack@;
+inline constexpr ULONG period_ticks = @_remoter_period@;
+inline constexpr uint32_t offline_timeout_ms = @_remoter_offline@;
+inline constexpr uint32_t ps2_period_ms = @_remoter_ps2_period@;
+}
+
+inline constexpr ui::config ui{ui_uart.instance, @_ui_timeout@};
+inline constexpr imu::dmimu::config dmimu{dmimu_can.instance, @_dm_id@, @_dm_master@,
+    imu::dmimu::mode::@_dm_mode@, @_dm_window@, @_dm_offline@};
+// HAL's DR16 word length includes the parity bit.
+inline constexpr bsp::usart::line_config dr16_line{100000, bsp::usart::word_length::bits_9,
+    bsp::usart::stop_bits::one, bsp::usart::parity::even, false, true};
+inline constexpr bsp::usart::line_config vt03_line{115200, bsp::usart::word_length::bits_8,
+    bsp::usart::stop_bits::one, bsp::usart::parity::none, false, true};
+inline constexpr float ps2_deadzone = @_deadzone@f;
+inline constexpr uint32_t ps2_spi_timeout_ms = @_spi_timeout@;
+} // namespace user_config

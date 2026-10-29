@@ -2,42 +2,60 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "STM32 Debug (DAP)",
+      "name": "h723_mc02 DAP",
       "type": "cortex-debug",
-      "serverpath": "openocd",
       "request": "launch",
       "servertype": "openocd",
+      "serverpath": "openocd",
       "cwd": "${workspaceFolder}",
-      "executable": "${command:cmake.buildDirectory}/pnx_embedded.elf",
-      "preLaunchTask": "cmake-build-debug",
+      "executable": "${workspaceFolder}/build/h723_mc02/embedded_framework.elf",
       "configFiles": [
         "interface/cmsis-dap.cfg",
-        "${command:cmake.buildDirectory}/pnx-openocd.cfg"
+        "target/stm32h7x.cfg"
       ],
-      "runToEntryPoint": "main",
-      "liveWatch": {
-        "enabled": true,
-        "samplesPerSecond": 20
-      }
+      "runToEntryPoint": "main"
     },
     {
-      "name": "STM32 Debug (STLink)",
+      "name": "h723_mc02 ST-Link",
       "type": "cortex-debug",
-      "serverpath": "openocd",
       "request": "launch",
       "servertype": "openocd",
+      "serverpath": "openocd",
       "cwd": "${workspaceFolder}",
-      "executable": "${command:cmake.buildDirectory}/pnx_embedded.elf",
-      "preLaunchTask": "cmake-build-debug",
+      "executable": "${workspaceFolder}/build/h723_mc02/embedded_framework.elf",
       "configFiles": [
         "interface/stlink.cfg",
-        "${command:cmake.buildDirectory}/pnx-openocd.cfg"
+        "target/stm32h7x.cfg"
       ],
-      "runToEntryPoint": "main",
-      "liveWatch": {
-        "enabled": true,
-        "samplesPerSecond": 20
-      }
-    }
+      "runToEntryPoint": "main"
+    },
+    {
+      "name": "f407_cboard DAP",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+      "serverpath": "openocd",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/build/f407_cboard/embedded_framework.elf",
+      "configFiles": [
+        "interface/cmsis-dap.cfg",
+        "target/stm32f4x.cfg"
+      ],
+      "runToEntryPoint": "main"
+    },
+    {
+      "name": "f407_cboard ST-Link",
+      "type": "cortex-debug",
+      "request": "launch",
+      "servertype": "openocd",
+      "serverpath": "openocd",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/build/f407_cboard/embedded_framework.elf",
+      "configFiles": [
+        "interface/stlink.cfg",
+        "target/stm32f4x.cfg"
+      ],
+      "runToEntryPoint": "main"
+    },
   ]
 }
