@@ -1,6 +1,6 @@
 {
     "usb": {
-        "enabled": true
+        "enabled": false
     },
     "ui": {
         "timeout_ms": 100
@@ -11,12 +11,9 @@
     },
     "boards": {
         "h723_mc02": {
-            "big_head_enabled": true,
-            "motor_can": "fdcan1",
-            "lower_can": "fdcan2",
-            "ui_uart": "none",
+            "ui_uart": "usart1",
             "dr16_uart": "uart5",
-            "vt03_uart": "usart1",
+            "vt03_uart": "uart7",
             "ps2_cs": "ps2_cs",
             "ps2_spi": "spi1",
             "dmimu_can": "fdcan1",
@@ -33,19 +30,16 @@
                 "kd": 100.0,
                 "max_out": 90.0
             },
-            "referee_uart": "none",
+            "referee_uart": "usart1",
             "remoter_dr16_enabled": true,
             "remoter_vt03_enabled": true,
-            "remoter_ps2_enabled": false,
+            "remoter_ps2_enabled": true,
             "bmi088_heater_enabled": true,
             "rfid_uart": "usart10",
             "buzzer_timer": "tim12",
             "buzzer_channel": 2
         },
         "f407_cboard": {
-            "big_head_enabled": false,
-            "motor_can": "none",
-            "lower_can": "none",
             "ui_uart": "none",
             "dr16_uart": "usart3",
             "vt03_uart": "usart6",
